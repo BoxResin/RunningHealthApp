@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -31,5 +32,12 @@ public class MainActivity extends AppCompatActivity
 
 		// 화면에 맵뷰를 추가한다.
 		binding.mapViewParent.addView(mapView);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
 	}
 }
