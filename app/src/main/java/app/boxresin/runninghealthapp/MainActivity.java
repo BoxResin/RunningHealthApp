@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity
 		binding.drawer.setDrawerListener(toggle);
 		toggle.syncState();
 
+		// 내비게이션 드로어에서, 지도 (메인 액티비티)에 체크한다.
+		binding.navView.setCheckedItem(R.id.nav_main);
+
 		// 맵뷰를 초기화한다.
 		MapView mapView = new MapView(this);
 		mapView.setDaumMapApiKey("d7430f85cbcf60aced1e2c584ae6361f"); // 다음 API 키 적용
