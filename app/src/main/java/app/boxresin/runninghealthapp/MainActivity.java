@@ -3,6 +3,7 @@ package app.boxresin.runninghealthapp;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -18,6 +19,9 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+		// 툴바를 초기화한다.
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
 		// 맵뷰를 초기화한다.
 		MapView mapView = new MapView(this);

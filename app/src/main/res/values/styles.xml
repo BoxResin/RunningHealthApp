@@ -1,11 +1,16 @@
 <resources>
-
-	<!-- Base application theme. -->
-	<style name = "AppTheme" parent = "Theme.AppCompat.Light.DarkActionBar">
+	<!-- 앱 테마 -->
+	<style name = "AppTheme" parent = "Theme.AppCompat.Light.NoActionBar">
 		<!-- Customize your theme here. -->
 		<item name = "colorPrimary">@color/colorPrimary</item>
 		<item name = "colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name = "colorAccent">@color/colorAccent</item>
 	</style>
 
+	<!-- 툴바 스타일 -->
+	<style name = "ToolBarStyle" parent = "Theme.AppCompat">
+		<item name = "android:textColorPrimary">@android:color/white</item>
+		<item name = "android:textColorSecondary">@android:color/white</item>
+		<item name = "actionMenuTextColor">@android:color/white</item>
+	</style>
 </resources>

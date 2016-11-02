@@ -2,16 +2,31 @@
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	xmlns:tools = "http://schemas.android.com/tools">
 
-	<RelativeLayout
-		android:id = "@+id/activity_main"
+	<LinearLayout
 		android:layout_width = "match_parent"
 		android:layout_height = "match_parent"
-		tools:context = "app.boxresin.runninghealthapp.MainActivity">
+		android:orientation = "vertical">
 
-		<!-- 맵뷰가 들어갈 자리 -->
-		<FrameLayout
-			android:id = "@+id/map_view_parent"
+		<!-- 툴바 영역 -->
+		<android.support.design.widget.AppBarLayout
 			android:layout_width = "match_parent"
-			android:layout_height = "match_parent"/>
-	</RelativeLayout>
+			android:layout_height = "wrap_content">
+
+			<include layout = "@layout/toolbar"/>
+		</android.support.design.widget.AppBarLayout>
+
+		<!-- 컨텐츠 영역 -->
+		<RelativeLayout
+			android:id = "@+id/activity_main"
+			android:layout_width = "match_parent"
+			android:layout_height = "match_parent"
+			tools:context = "app.boxresin.runninghealthapp.MainActivity">
+
+			<!-- 맵뷰가 들어갈 자리 -->
+			<FrameLayout
+				android:id = "@+id/map_view_parent"
+				android:layout_width = "match_parent"
+				android:layout_height = "match_parent"/>
+		</RelativeLayout>
+	</LinearLayout>
 </layout>
