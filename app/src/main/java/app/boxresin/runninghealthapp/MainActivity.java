@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
 
 		// 맵뷰를 초기화한다.
 		MapView mapView = new MapView(this);
-		mapView.setDaumMapApiKey("d7430f85cbcf60aced1e2c584ae6361f");
+		mapView.setDaumMapApiKey("d7430f85cbcf60aced1e2c584ae6361f"); // 다음 API 키 적용
 		mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.494632, 126.959854), -2, true); // 정보대 위치로 이동
 		mapView.setMapType(MapView.MapType.Hybrid); // 지도는 스카이뷰 모드로
 
