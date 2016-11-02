@@ -1,115 +1,127 @@
 <layout
 	xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:app = "http://schemas.android.com/apk/res-auto"
 	xmlns:tools = "http://schemas.android.com/tools">
 
-	<LinearLayout
+	<android.support.v4.widget.DrawerLayout
+		android:id = "@+id/drawer"
 		android:layout_width = "match_parent"
 		android:layout_height = "match_parent"
-		android:orientation = "vertical">
+		android:fitsSystemWindows = "true"
+		tools:openDrawer = "start">
 
-		<!-- 툴바 영역 -->
-		<android.support.design.widget.AppBarLayout
-			android:layout_width = "match_parent"
-			android:layout_height = "wrap_content">
-
-			<include layout = "@layout/toolbar"/>
-		</android.support.design.widget.AppBarLayout>
-
-		<!-- 컨텐츠 영역 -->
-		<RelativeLayout
-			android:id = "@+id/activity_main"
+		<LinearLayout
 			android:layout_width = "match_parent"
 			android:layout_height = "match_parent"
-			tools:context = "app.boxresin.runninghealthapp.MainActivity">
+			android:orientation = "vertical">
 
-			<!-- 맵뷰가 들어갈 자리 -->
-			<FrameLayout
-				android:id = "@+id/map_view_parent"
+			<!-- 툴바 영역 -->
+			<include layout = "@layout/toolbar"/>
+
+			<!-- 컨텐츠 영역 -->
+			<RelativeLayout
+				android:id = "@+id/activity_main"
 				android:layout_width = "match_parent"
-				android:layout_height = "match_parent">
+				android:layout_height = "match_parent"
+				tools:context = "app.boxresin.runninghealthapp.MainActivity">
 
-				<!-- 지도 이미지 (미리보기에서만 보임) -->
-				<ImageView
+				<!-- 맵뷰가 들어갈 자리 -->
+				<FrameLayout
+					android:id = "@+id/map_view_parent"
 					android:layout_width = "match_parent"
-					android:layout_height = "match_parent"
-					android:src = "@drawable/sample_map"
-					android:scaleType="centerCrop"
-					android:visibility = "gone"
-					tools:visibility = "visible"/>
-			</FrameLayout>
+					android:layout_height = "match_parent">
 
-			<!-- 속도, 칼로리, 걸음 수 표시 영역 -->
-			<LinearLayout
-				android:layout_width = "wrap_content"
-				android:layout_height = "wrap_content"
-				android:orientation = "vertical"
-				android:padding = "10dp"
-				tools:background = "#FF0000"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
+					<!-- 지도 이미지 (미리보기에서만 보임) -->
+					<ImageView
+						android:layout_width = "match_parent"
+						android:layout_height = "match_parent"
+						android:scaleType = "centerCrop"
+						android:src = "@drawable/sample_map"
+						android:visibility = "gone"
+						tools:visibility = "visible"/>
+				</FrameLayout>
 
-				<TextView
+				<!-- 속도, 칼로리, 걸음 수 표시 영역 -->
+				<LinearLayout
 					android:layout_width = "wrap_content"
 					android:layout_height = "wrap_content"
-					android:layout_marginBottom = "5dp"
-					android:shadowColor = "@android:color/black"
-					android:shadowDx = "3"
-					android:shadowDy = "3"
-					android:shadowRadius = "2"
-					android:text = "5 ㎞/h"
-					android:textColor = "@android:color/white"
-					android:textSize = "20sp"
-					android:textStyle = "bold"/>
+					android:orientation = "vertical"
+					android:padding = "10dp"
+					tools:background = "#FF0000"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
 
-				<TextView
-					android:layout_width = "wrap_content"
-					android:layout_height = "wrap_content"
-					android:shadowColor = "@android:color/black"
-					android:shadowDx = "3"
-					android:shadowDy = "3"
-					android:shadowRadius = "2"
-					android:text = "31 ㎉"
-					android:textColor = "@color/colorPrimary"
-					android:textSize = "15sp"/>
+					<TextView
+						android:layout_width = "wrap_content"
+						android:layout_height = "wrap_content"
+						android:layout_marginBottom = "5dp"
+						android:shadowColor = "@android:color/black"
+						android:shadowDx = "3"
+						android:shadowDy = "3"
+						android:shadowRadius = "2"
+						android:text = "5 ㎞/h"
+						android:textColor = "@android:color/white"
+						android:textSize = "20sp"
+						android:textStyle = "bold"/>
 
-				<TextView
-					android:layout_width = "wrap_content"
-					android:layout_height = "wrap_content"
-					android:shadowColor = "@android:color/black"
-					android:shadowDx = "3"
-					android:shadowDy = "3"
-					android:shadowRadius = "2"
-					android:text = "13 걸음"
-					android:textColor = "@android:color/white"
-					android:textSize = "15sp"/>
-			</LinearLayout>
+					<TextView
+						android:layout_width = "wrap_content"
+						android:layout_height = "wrap_content"
+						android:shadowColor = "@android:color/black"
+						android:shadowDx = "3"
+						android:shadowDy = "3"
+						android:shadowRadius = "2"
+						android:text = "31 ㎉"
+						android:textColor = "@color/colorPrimary"
+						android:textSize = "15sp"/>
 
-			<!-- 현재 위치 추적 버튼 영역 -->
-			<Button
-				android:layout_width = "45dp"
-				android:layout_height = "45dp"
-				android:layout_alignParentRight = "true"
-				android:layout_marginRight = "10dp"
-				android:layout_marginTop = "10dp"/>
+					<TextView
+						android:layout_width = "wrap_content"
+						android:layout_height = "wrap_content"
+						android:shadowColor = "@android:color/black"
+						android:shadowDx = "3"
+						android:shadowDy = "3"
+						android:shadowRadius = "2"
+						android:text = "13 걸음"
+						android:textColor = "@android:color/white"
+						android:textSize = "15sp"/>
+				</LinearLayout>
 
-			<!-- 지도 축소·확대 버튼 영역 -->
-			<LinearLayout
-				android:layout_width = "wrap_content"
-				android:layout_height = "wrap_content"
-				android:layout_alignParentBottom = "true"
-				android:layout_alignParentRight = "true"
-				android:layout_marginBottom = "10dp"
-				android:layout_marginRight = "10dp"
-				android:orientation = "vertical">
-
+				<!-- 현재 위치 추적 버튼 영역 -->
 				<Button
 					android:layout_width = "45dp"
 					android:layout_height = "45dp"
-					android:text = "+"/>
+					android:layout_alignParentRight = "true"
+					android:layout_marginRight = "10dp"
+					android:layout_marginTop = "10dp"/>
 
-				<Button
-					android:layout_width = "45dp"
-					android:layout_height = "45dp"
-					android:text = "-"/>
-			</LinearLayout>
-		</RelativeLayout>
-	</LinearLayout>
+				<!-- 지도 축소·확대 버튼 영역 -->
+				<LinearLayout
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:layout_alignParentBottom = "true"
+					android:layout_alignParentRight = "true"
+					android:layout_marginBottom = "10dp"
+					android:layout_marginRight = "10dp"
+					android:orientation = "vertical">
+
+					<Button
+						android:layout_width = "45dp"
+						android:layout_height = "45dp"
+						android:text = "+"/>
+
+					<Button
+						android:layout_width = "45dp"
+						android:layout_height = "45dp"
+						android:text = "-"/>
+				</LinearLayout>
+			</RelativeLayout>
+		</LinearLayout>
+
+		<android.support.design.widget.NavigationView
+			android:layout_width = "wrap_content"
+			android:layout_height = "match_parent"
+			android:layout_gravity = "start"
+			android:fitsSystemWindows = "true"
+			app:headerLayout = "@layout/nav_header_main"
+			app:menu = "@menu/activity_main_drawer"/>
+	</android.support.v4.widget.DrawerLayout>
 </layout>

@@ -1,6 +1,7 @@
 package app.boxresin.runninghealthapp;
 
 import android.databinding.DataBindingUtil;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity
 {
 	private ActivityMainBinding binding;
+	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -22,7 +24,13 @@ public class MainActivity extends AppCompatActivity
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
 		// 툴바를 초기화한다.
-		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+
+		// 내비게이션 드로어를 초기화한다.
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawer, toolbar, R.string.app_name, R.string.app_name);
+		binding.drawer.setDrawerListener(toggle);
+		toggle.syncState();
 
 		// 맵뷰를 초기화한다.
 		MapView mapView = new MapView(this);
