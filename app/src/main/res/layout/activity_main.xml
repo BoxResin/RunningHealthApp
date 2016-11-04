@@ -72,17 +72,6 @@
 						android:text = "31 ㎉"
 						android:textColor = "@color/colorPrimary"
 						android:textSize = "15sp"/>
-
-					<TextView
-						android:layout_width = "wrap_content"
-						android:layout_height = "wrap_content"
-						android:shadowColor = "@android:color/black"
-						android:shadowDx = "3"
-						android:shadowDy = "3"
-						android:shadowRadius = "2"
-						android:text = "13 걸음"
-						android:textColor = "@android:color/white"
-						android:textSize = "15sp"/>
 				</LinearLayout>
 
 				<!-- 현재 위치 추적 버튼 영역 -->
