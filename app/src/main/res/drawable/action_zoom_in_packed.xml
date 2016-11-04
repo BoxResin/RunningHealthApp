@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+		android:id="@+id/half_overlay"
+		android:drawable="@drawable/action_zoom_in"
+		android:width="25dp"
+		android:height="25dp"/>
+
+</layer-list>

@@ -14,7 +14,7 @@ import app.boxresin.runninghealthapp.databinding.ActivityWelcomeBinding;
 
 public class WelcomeActivity extends AppCompatActivity
 {
-	ActivityWelcomeBinding binding;
+	private ActivityWelcomeBinding binding;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -93,6 +93,7 @@ public class WelcomeActivity extends AppCompatActivity
 		case R.id.btn_start:
 			// 메인 액티비티로 이동한다.
 			startActivity(new Intent(this, MainActivity.class));
+			finish();
 			break;
 		}
 	}

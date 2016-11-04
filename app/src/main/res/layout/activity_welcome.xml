@@ -41,6 +41,7 @@
 			android:onClick = "onClick"
 			android:text = "시작하기"
 			android:visibility = "gone"
-			tools:visibility = "visible"/>
+			tools:visibility = "visible"
+			style="@style/GrayButtonStyle"/>
 	</FrameLayout>
 </layout>

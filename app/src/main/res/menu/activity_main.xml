@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- 메인 액티비티 메뉴 -->
 <menu xmlns:android = "http://schemas.android.com/apk/res/android"
       xmlns:app = "http://schemas.android.com/apk/res-auto">
+
+	<item
+		android:icon = "@drawable/action_start_white"
+		android:title = "시작"
+		app:showAsAction = "always"/>
 
 	<item android:title = "더미 메뉴"/>
 </menu>
