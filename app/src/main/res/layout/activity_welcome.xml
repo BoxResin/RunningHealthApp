@@ -23,7 +23,8 @@
 					android:id = "@+id/view_pager"
 					android:layout_width = "match_parent"
 					android:layout_height = "300dp"
-					android:layout_marginBottom = "20dp"/>
+					android:layout_marginBottom = "20dp"
+					tools:background = "@drawable/explain_app_1"/>
 
 				<com.viewpagerindicator.CirclePageIndicator
 					android:id = "@+id/pager_indicator"
@@ -34,6 +35,7 @@
 
 		<Button
 			android:id = "@+id/btn_start"
+			style = "@style/GrayButtonStyle"
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
 			android:layout_gravity = "bottom|center_horizontal"
@@ -41,7 +43,6 @@
 			android:onClick = "onClick"
 			android:text = "시작하기"
 			android:visibility = "gone"
-			tools:visibility = "visible"
-			style="@style/GrayButtonStyle"/>
+			tools:visibility = "visible"/>
 	</FrameLayout>
 </layout>

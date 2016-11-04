@@ -4,24 +4,27 @@
 	<group android:checkableBehavior = "single">
 		<item
 			android:id = "@+id/nav_main"
-			android:title = "지도"/>
+			android:icon = "@drawable/action_map_black"
+			android:title = "지도 화면"/>
 		<item
 			android:id = "@+id/nav_record"
-			android:title = "기록"/>
+			android:icon = "@drawable/ic_graph_black"
+			android:title = "기록 화면"/>
 		<item
 			android:id = "@+id/nav_setting"
-			android:title = "설정"/>
+			android:icon = "@drawable/ic_settings_black"
+			android:title = "설정 화면"/>
 	</group>
 
-<!--	<item android:title = "Communicate">
-		<menu>
-			<item
-				android:id = "@+id/nav_share"
-				android:title = "Share"/>
-			<item
-				android:id = "@+id/nav_send"
-				android:title = "Send"/>
-		</menu>
-	</item>-->
+	<!--	<item android:title = "Communicate">
+			<menu>
+				<item
+					android:id = "@+id/nav_share"
+					android:title = "Share"/>
+				<item
+					android:id = "@+id/nav_send"
+					android:title = "Send"/>
+			</menu>
+		</item>-->
 
 </menu>
