@@ -1,8 +1,10 @@
 package app.boxresin.runninghealthapp;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+
+import app.boxresin.runninghealthapp.databinding.ActivitySettingBinding;
 
 /**
  * Created by eomin on 2016-11-04.
@@ -10,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 
 public class SettingActivity extends AppCompatActivity
 {
+	private ActivitySettingBinding binding;
+
 	@Override
-	public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState)
+	public void onCreate(Bundle savedInstanceState)
 	{
-		super.onCreate(savedInstanceState, persistentState);
-		setContentView(R.layout.activity_setting);
+		super.onCreate(savedInstanceState);
+		binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
 	}
 }
