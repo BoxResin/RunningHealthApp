@@ -9,11 +9,11 @@
 		<item
 			android:id = "@+id/nav_record"
 			android:icon = "@drawable/ic_graph_black"
-			android:title = "기록 화면"/>
+			android:title = "기록"/>
 		<item
 			android:id = "@+id/nav_setting"
 			android:icon = "@drawable/ic_settings_black"
-			android:title = "설정 화면"/>
+			android:title = "설정"/>
 	</group>
 
 	<!--	<item android:title = "Communicate">

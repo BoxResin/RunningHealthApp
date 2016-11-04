@@ -2,7 +2,7 @@ package app.boxresin.runninghealthapp;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,11 +11,13 @@ import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
+import util.Initializer;
 
 public class MainActivity extends AppCompatActivity
 {
 	private ActivityMainBinding binding;
 	private Toolbar toolbar;
+	private NavigationView navView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -28,12 +30,11 @@ public class MainActivity extends AppCompatActivity
 		setSupportActionBar(toolbar);
 
 		// 내비게이션 드로어를 초기화한다.
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawer, toolbar, R.string.app_name, R.string.app_name);
-		binding.drawer.setDrawerListener(toggle);
-		toggle.syncState();
+		navView = (NavigationView) findViewById(R.id.nav_view);
+		Initializer.initNavDrawer(this, toolbar, binding.drawer, navView);
 
-		// 내비게이션 드로어에서, 지도 (메인 액티비티)에 체크한다.
-		binding.navView.setCheckedItem(R.id.nav_main);
+		// 내비게이션 드로어에서, 지도 화면 (메인 액티비티)에 체크한다.
+		navView.setCheckedItem(R.id.nav_main);
 
 		// 맵뷰를 초기화한다.
 		MapView mapView = new MapView(this);
