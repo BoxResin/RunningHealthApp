@@ -1,0 +1,10 @@
+<!-- 앱 소개 화면 1 -->
+<ImageView
+	xmlns:android = "http://schemas.android.com/apk/res/android"
+	android:layout_width = "match_parent"
+	android:layout_height = "match_parent"
+	android:orientation = "vertical"
+	android:src = "@drawable/explain_app_2"
+	android:layout_margin="20dp">
+
+</ImageView>
