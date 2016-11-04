@@ -25,26 +25,23 @@
 		android:text = "정확한 소모 칼로리 계산을 위해 필요합니다!"/>
 
 	<!-- 성별 선택 부분 -->
-	<LinearLayout
+	<RadioGroup
 		android:layout_width = "match_parent"
 		android:layout_height = "wrap_content"
-		android:gravity = "center">
+		android:gravity = "center"
+		android:orientation = "horizontal">
 
 		<RadioButton
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
+			android:layout_marginRight = "30dp"
 			android:text = "남자"/>
-
-		<!-- 여백 -->
-		<View
-			android:layout_width = "30dp"
-			android:layout_height = "30dp"/>
 
 		<RadioButton
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
 			android:text = "여자"/>
-	</LinearLayout>
+	</RadioGroup>
 
 	<!-- 키·체중 입력 부분 -->
 	<LinearLayout
@@ -55,14 +52,14 @@
 		tools:background = "#FFFF00">
 
 		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="5dp">
+			android:layout_width = "match_parent"
+			android:layout_height = "wrap_content"
+			android:layout_margin = "5dp">
 
 			<EditText
 				android:layout_width = "0dp"
-				android:layout_weight="1"
 				android:layout_height = "wrap_content"
+				android:layout_weight = "1"
 				android:gravity = "right"
 				android:hint = "키"
 				android:inputType = "number"
@@ -71,20 +68,20 @@
 			<TextView
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
-				android:layout_weight="0"
-				android:text="(㎝)"
-				android:textSize="15sp"/>
+				android:layout_weight = "0"
+				android:text = "(㎝)"
+				android:textSize = "15sp"/>
 		</LinearLayout>
 
 		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="5dp">
+			android:layout_width = "match_parent"
+			android:layout_height = "wrap_content"
+			android:layout_margin = "5dp">
 
 			<EditText
 				android:layout_width = "0dp"
-				android:layout_weight="1"
 				android:layout_height = "wrap_content"
+				android:layout_weight = "1"
 				android:gravity = "right"
 				android:hint = "체중"
 				android:inputType = "number"
@@ -93,9 +90,9 @@
 			<TextView
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
-				android:layout_weight="0"
-				android:text="(㎏)"
-				android:textSize="15sp"/>
+				android:layout_weight = "0"
+				android:text = "(㎏)"
+				android:textSize = "15sp"/>
 		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

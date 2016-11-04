@@ -3,6 +3,7 @@ package app.boxresin.runninghealthapp;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,10 +66,23 @@ public class WelcomeActivity extends AppCompatActivity
 				container.removeView((View) object);
 			}
 		});
-		binding.test.setFillColor(0XFF00B29C);
-		binding.test.setStrokeColor(0XFF00B29C);
-		binding.test.setViewPager(binding.viewPager);
 
-		// 사용자가 모든 내용을 입력하면 시작하기 버튼이 나타나도록 한다.
+		// 마지막 페이지에 도달하면 시작하기 버튼을 나타낸다.
+		binding.viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+		{
+			@Override
+			public void onPageSelected(int position)
+			{
+				if (position == 2)
+					binding.btnStart.setVisibility(View.VISIBLE);
+				else
+					binding.btnStart.setVisibility(View.GONE);
+			}
+		});
+		binding.pagerIndicator.setFillColor(0XFF00B29C);
+		binding.pagerIndicator.setStrokeColor(0XFF00B29C);
+		binding.pagerIndicator.setViewPager(binding.viewPager);
+
+		// TODO 사용자가 모든 내용을 입력하면 시작하기 버튼이 나타나도록 한다.
 	}
 }
