@@ -87,11 +87,13 @@
 
 				<!-- 현재 위치 추적 버튼 영역 -->
 				<Button
+					android:id = "@+id/btn_location_chase"
 					android:layout_width = "45dp"
 					android:layout_height = "45dp"
 					android:layout_alignParentRight = "true"
 					android:layout_marginRight = "10dp"
-					android:layout_marginTop = "10dp"/>
+					android:layout_marginTop = "10dp"
+					android:onClick = "onClick"/>
 
 				<!-- 지도 축소·확대 버튼 영역 -->
 				<LinearLayout
@@ -104,13 +106,17 @@
 					android:orientation = "vertical">
 
 					<Button
+						android:id = "@+id/btn_zoom_in"
 						android:layout_width = "45dp"
 						android:layout_height = "45dp"
+						android:onClick = "onClick"
 						android:text = "+"/>
 
 					<Button
+						android:id = "@+id/btn_zoom_out"
 						android:layout_width = "45dp"
 						android:layout_height = "45dp"
+						android:onClick = "onClick"
 						android:text = "-"/>
 				</LinearLayout>
 			</RelativeLayout>
@@ -124,6 +130,6 @@
 			android:fitsSystemWindows = "true"
 			app:headerLayout = "@layout/nav_header"
 			app:menu = "@menu/nav_drawer"
-			tools:visibility = "visible"/>
+			tools:visibility = "gone"/>
 	</android.support.v4.widget.DrawerLayout>
 </layout>
