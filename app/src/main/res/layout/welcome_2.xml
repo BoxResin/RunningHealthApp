@@ -1,10 +1,25 @@
 <!-- 앱 소개 화면 2 -->
-<ImageView
+<LinearLayout
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	android:layout_width = "match_parent"
 	android:layout_height = "match_parent"
-	android:orientation = "vertical"
-	android:src = "@drawable/explain_app_1"
-	android:layout_margin="20dp">
+	android:layout_margin = "20dp"
+	android:gravity = "center"
+	android:orientation = "vertical">
 
-</ImageView>
+	<TextView
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "15dp"
+		android:gravity = "center"
+		android:text = "메뉴 레이아웃"
+		android:textColor = "@color/colorPrimary"
+		android:textSize = "20sp"
+		android:textStyle = "bold"/>
+
+	<ImageView
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:adjustViewBounds = "true"
+		android:src = "@drawable/explain_app_2"/>
+</LinearLayout>

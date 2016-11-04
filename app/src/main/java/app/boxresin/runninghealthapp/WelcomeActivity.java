@@ -18,13 +18,15 @@ public class WelcomeActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		// 뷰 페이저와 인디케이터를 초기화한다.
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
 		binding.viewPager.setAdapter(new PagerAdapter()
 		{
 			@Override
 			public int getCount()
 			{
-				return 2;
+				return 3;
 			}
 
 			@Override
@@ -48,6 +50,10 @@ public class WelcomeActivity extends AppCompatActivity
 				case 1:
 					root = inflater.inflate(R.layout.welcome_2, null);
 					break;
+
+				case 2:
+					root = inflater.inflate(R.layout.welcome_3, null);
+					break;
 				}
 				container.addView(root);
 				return root;
@@ -62,5 +68,7 @@ public class WelcomeActivity extends AppCompatActivity
 		binding.test.setFillColor(0XFF00B29C);
 		binding.test.setStrokeColor(0XFF00B29C);
 		binding.test.setViewPager(binding.viewPager);
+
+		// 사용자가 모든 내용을 입력하면 시작하기 버튼이 나타나도록 한다.
 	}
 }

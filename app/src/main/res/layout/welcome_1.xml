@@ -1,10 +1,32 @@
 <!-- 앱 소개 화면 1 -->
-<ImageView
+<LinearLayout
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	android:layout_width = "match_parent"
 	android:layout_height = "match_parent"
-	android:orientation = "vertical"
-	android:src = "@drawable/explain_app_2"
-	android:layout_margin="20dp">
+	android:layout_margin = "20dp"
+	android:gravity = "center"
+	android:orientation = "vertical">
 
-</ImageView>
+	<TextView
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:layout_marginBottom = "5dp"
+		android:gravity = "center"
+		android:text = "메인 화면 인터페이스"
+		android:textSize = "20sp"
+		android:textColor = "@color/colorPrimary"
+		android:textStyle = "bold"/>
+
+	<TextView
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:text = "현재 속도와 소모한 칼로리 량을 볼 수 있습니다!"
+		android:gravity="center"
+		android:layout_marginBottom = "20dp"/>
+
+	<ImageView
+		android:layout_width = "match_parent"
+		android:layout_height = "wrap_content"
+		android:adjustViewBounds = "true"
+		android:src = "@drawable/explain_app_1"/>
+</LinearLayout>
