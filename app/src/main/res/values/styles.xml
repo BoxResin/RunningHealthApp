@@ -14,9 +14,14 @@
 		<item name = "actionMenuTextColor">@android:color/white</item>
 	</style>
 
-	<!-- 버튼 스타일 -->
+	<!-- 회색 버튼 스타일 -->
 	<style name = "GrayButtonStyle">
 		<item name = "android:background">@drawable/btn_square_flat</item>
+	</style>
+
+	<!-- 녹색 버튼 스타일 -->
+	<style name = "GreenButtonStyle">
+		<item name = "android:background">@drawable/btn_square_theme_flat_normal</item>
 	</style>
 
 	<!-- 이미지 버튼 스타일 -->

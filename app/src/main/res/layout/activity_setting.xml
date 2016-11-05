@@ -130,21 +130,21 @@
 				android:orientation = "horizontal">
 
 				<Button
+					style="@style/GreenButtonStyle"
 					android:layout_width = "0dp"
 					android:layout_height = "wrap_content"
 					android:layout_marginRight = "10dp"
 					android:layout_weight = "1"
-					android:background = "#B7F0B1"
 					android:text = "수정완료"
 					android:textColor = "#FFF"
 					android:textSize = "30dp"/>
 
 				<Button
+					style = "@style/GrayButtonStyle"
 					android:layout_width = "0dp"
 					android:layout_height = "wrap_content"
 					android:layout_marginLeft = "10dp"
 					android:layout_weight = "1"
-					android:background = "#CACACA"
 					android:text = "취소"
 					android:textSize = "30dp"/>
 			</LinearLayout>
