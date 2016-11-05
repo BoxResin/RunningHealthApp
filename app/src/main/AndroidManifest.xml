@@ -22,9 +22,5 @@
 		<activity android:name = ".WelcomeActivity">
 		</activity>
 
-		<activity
-			android:name = ".SettingActivity"
-			android:label = "설정">
-		</activity>
 	</application>
 </manifest>
