@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity
 		toggle.syncState();
 
 		// 프래그먼트들을 초기화한다.
-		mapFragment = new MapFragment();
-		settingFragment = new SettingFragment();
+		mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
+		settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_setting);
 
 		// 내비게이션 목록을 누르면 해당 액티비티로 이동하게 한다.
 		navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
@@ -56,11 +56,13 @@ public class MainActivity extends AppCompatActivity
 				toolbar.getMenu().clear();
 
 				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+				transaction.hide(mapFragment);
+				transaction.hide(settingFragment);
 
 				switch (item.getItemId())
 				{
 				case R.id.nav_main: // 지도 화면을 눌렀을 때
-					transaction.replace(R.id.fragment_parent, mapFragment);
+					transaction.show(mapFragment);
 					setTitle(R.string.title_map_fragment);
 					toolbar.inflateMenu(R.menu.fragment_main);
 					break;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 					break;
 
 				case R.id.nav_setting: // 설정을 눌렀을 때
-					transaction.replace(R.id.fragment_parent, settingFragment);
+					transaction.show(settingFragment);
 					setTitle(R.string.title_setting_fragment);
 					toolbar.inflateMenu(R.menu.fragment_setting);
 					break;
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity
 
 		// 내비게이션 드로어에서, 지도 화면에 체크한다.
 		navView.setCheckedItem(R.id.nav_main);
-		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_parent, mapFragment).commit();
 	}
 
 	@Override
