@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import app.boxresin.runninghealthapp.databinding.ActivitySettingBinding;
-import util.Initializer;
 
 /**
  * Created by eomin on 2016-11-04.
@@ -31,7 +30,7 @@ public class SettingActivity extends AppCompatActivity
 
 		// 내비게이션 드로어를 초기화한다.
 		navView = (NavigationView) findViewById(R.id.nav_view);
-		Initializer.initNavDrawer(this, toolbar, binding.drawer, navView);
+//		Initializer.initNavDrawer(this, toolbar, binding.drawer, navView);
 
 		// 내비게이션 드로어에서, 설정 (설정 액티비티)에 체크한다.
 		navView.setCheckedItem(R.id.nav_setting);

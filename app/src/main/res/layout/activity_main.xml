@@ -8,7 +8,7 @@
 		android:layout_width = "match_parent"
 		android:layout_height = "match_parent"
 		android:fitsSystemWindows = "true"
-		tools:openDrawer = "end">
+		tools:openDrawer = "start">
 
 		<LinearLayout
 			android:layout_width = "match_parent"
@@ -19,100 +19,11 @@
 			<include layout = "@layout/toolbar"/>
 
 			<!-- 컨텐츠 영역 -->
-			<RelativeLayout
-				android:id = "@+id/activity_main"
+			<FrameLayout
+				android:id = "@+id/fragment_parent"
 				android:layout_width = "match_parent"
-				android:layout_height = "match_parent"
-				tools:context = "app.boxresin.runninghealthapp.MainActivity">
+				android:layout_height = "match_parent"/>
 
-				<!-- 맵뷰가 들어갈 자리 -->
-				<FrameLayout
-					android:id = "@+id/map_view_parent"
-					android:layout_width = "match_parent"
-					android:layout_height = "match_parent">
-
-					<!-- 지도 이미지 (미리보기에서만 보임) -->
-					<ImageView
-						android:layout_width = "match_parent"
-						android:layout_height = "match_parent"
-						android:scaleType = "centerCrop"
-						android:src = "@drawable/sample_map"
-						android:visibility = "gone"
-						tools:visibility = "visible"/>
-				</FrameLayout>
-
-				<!-- 속도, 칼로리, 걸음 수 표시 영역 -->
-				<LinearLayout
-					android:layout_width = "wrap_content"
-					android:layout_height = "wrap_content"
-					android:orientation = "vertical"
-					android:padding = "10dp"
-					tools:background = "#FF0000"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
-
-					<TextView
-						android:layout_width = "wrap_content"
-						android:layout_height = "wrap_content"
-						android:layout_marginBottom = "5dp"
-						android:shadowColor = "@android:color/black"
-						android:shadowDx = "3"
-						android:shadowDy = "3"
-						android:shadowRadius = "2"
-						android:text = "5 ㎞/h"
-						android:textColor = "@android:color/white"
-						android:textSize = "20sp"
-						android:textStyle = "bold"/>
-
-					<TextView
-						android:layout_width = "wrap_content"
-						android:layout_height = "wrap_content"
-						android:shadowColor = "@android:color/black"
-						android:shadowDx = "3"
-						android:shadowDy = "3"
-						android:shadowRadius = "2"
-						android:text = "31 ㎉"
-						android:textColor = "@color/colorPrimary"
-						android:textSize = "15sp"/>
-				</LinearLayout>
-
-				<!-- 현재 위치 추적 버튼 영역 -->
-				<ImageButton
-					android:id = "@+id/btn_location_chase"
-					style = "@style/ImageButtonStyle"
-					android:layout_width = "45dp"
-					android:layout_height = "45dp"
-					android:layout_alignParentRight = "true"
-					android:layout_marginRight = "10dp"
-					android:layout_marginTop = "10dp"
-					android:onClick = "onClick"
-					android:src = "@drawable/action_my_location"/>
-
-				<!-- 지도 축소·확대 버튼 영역 -->
-				<LinearLayout
-					android:layout_width = "wrap_content"
-					android:layout_height = "wrap_content"
-					android:layout_alignParentBottom = "true"
-					android:layout_alignParentRight = "true"
-					android:layout_marginBottom = "10dp"
-					android:layout_marginRight = "10dp"
-					android:orientation = "vertical">
-
-					<ImageButton
-						android:id = "@+id/btn_zoom_in"
-						style = "@style/ImageButtonStyle"
-						android:layout_width = "45dp"
-						android:layout_height = "45dp"
-						android:onClick = "onClick"
-						android:src = "@drawable/action_zoom_in"/>
-
-					<ImageButton
-						android:id = "@+id/btn_zoom_out"
-						style = "@style/ImageButtonStyle"
-						android:layout_width = "45dp"
-						android:layout_height = "45dp"
-						android:onClick = "onClick"
-						android:src = "@drawable/action_zoom_out"/>
-				</LinearLayout>
-			</RelativeLayout>
 		</LinearLayout>
 
 		<!-- 내비게이션 목록 뷰 -->
