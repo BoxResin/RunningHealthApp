@@ -21,6 +21,5 @@
 
 		<activity android:name = ".WelcomeActivity">
 		</activity>
-
 	</application>
 </manifest>

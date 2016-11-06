@@ -64,18 +64,22 @@ public class MainActivity extends AppCompatActivity
 				case R.id.nav_main: // 지도 화면을 눌렀을 때
 					transaction.show(mapFragment);
 					setTitle(R.string.title_map_fragment);
-					toolbar.inflateMenu(R.menu.fragment_main);
+					toolbar.inflateMenu(R.menu.fragment_map);
+					toolbar.setOnMenuItemClickListener(mapFragment);
+					mapFragment.syncMenuStatus(toolbar.getMenu());
 					break;
 
 				case R.id.nav_record: // 기록을 눌렀을 때
 					setTitle(R.string.title_record_fragment);
 					toolbar.inflateMenu(R.menu.fragment_record);
+//					toolbar.setOnMenuItemClickListener();
 					break;
 
 				case R.id.nav_setting: // 설정을 눌렀을 때
 					transaction.show(settingFragment);
 					setTitle(R.string.title_setting_fragment);
 					toolbar.inflateMenu(R.menu.fragment_setting);
+					toolbar.setOnMenuItemClickListener(settingFragment);
 					break;
 				}
 				transaction.commit();
@@ -90,7 +94,8 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		getMenuInflater().inflate(R.menu.fragment_main, menu);
+		getMenuInflater().inflate(R.menu.fragment_map, menu);
+		toolbar.setOnMenuItemClickListener(mapFragment);
 		return true;
 	}
 }

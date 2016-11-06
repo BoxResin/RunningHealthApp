@@ -45,7 +45,7 @@
 				android:shadowRadius = "2"
 				android:text = "5 ㎞/h"
 				android:textColor = "@android:color/white"
-				android:textSize = "20sp"
+				android:textSize = "25sp"
 				android:textStyle = "bold"/>
 
 			<TextView
@@ -57,7 +57,7 @@
 				android:shadowRadius = "2"
 				android:text = "31 ㎉"
 				android:textColor = "@color/colorPrimary"
-				android:textSize = "15sp"/>
+				android:textSize = "20sp"/>
 		</LinearLayout>
 
 		<!-- 현재 위치 추적 버튼 영역 -->
