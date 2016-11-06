@@ -82,7 +82,7 @@ public class GraphFragment extends Fragment
 		for (int i = 0; i < adapter.getCount(); i++)
 		{
 			Record record = adapter.getItem(i);
-			bottomCaptions.add(record.getDate().replace("  ", "\n"));
+			bottomCaptions.add("_  " + record.getDate().replace("  ", "\n") + "  _");
 			dataMoved.add((int) (record.getMoved() * 1000));
 			dataConsumed.add((int) record.getConsumed());
 		}
