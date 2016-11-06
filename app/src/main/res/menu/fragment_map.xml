@@ -11,10 +11,4 @@
 	<item
 		android:id="@+id/action_save_record"
 		android:title = "기록 저장"/>
-
-	<item android:title = "더미 메뉴1"/>
-
-	<item android:title = "더미 메뉴2"/>
-
-	<item android:title = "더미 메뉴3"/>
 </menu>
