@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.RadioGroup;
 
 import net.daum.mf.map.api.MapView;
@@ -30,6 +31,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 		// 툴바를 초기화한다.
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// 환경설정 대로 초기값을 설정한다.
 		switch (Settings.get().getMapType())
@@ -74,6 +76,21 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 				Settings.get().setMapType(MapView.MapType.Hybrid);
 				break;
 			}
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		// 사용자가 뒤로가기 버튼을 누르면 액티비티를 종료한다.
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
