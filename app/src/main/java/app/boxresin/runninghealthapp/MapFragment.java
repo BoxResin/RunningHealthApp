@@ -68,6 +68,18 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	}
 
 	/**
+	 * 지도 프래그먼트가 재시작(다른 액티비티로 갔다 돌아올 때)될 때 호출되는 메서드
+	 */
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+
+		// 환경설정대로 지도 표시 형태를 갱신한다.
+		mapView.setMapType(Settings.get().getMapType());
+	}
+
+	/**
 	 * 메뉴의 상태(ex. 시작·정지 상태인지)를 동기화하는 메서드
 	 */
 	public void syncMenuStatus(Menu menu)

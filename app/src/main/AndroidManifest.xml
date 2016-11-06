@@ -21,5 +21,10 @@
 
 		<activity android:name = ".WelcomeActivity">
 		</activity>
+
+		<activity
+			android:name = ".SettingActivity"
+			android:label = "@string/title_setting_fragment">
+		</activity>
 	</application>
 </manifest>

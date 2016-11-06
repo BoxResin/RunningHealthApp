@@ -1,5 +1,6 @@
 package app.boxresin.runninghealthapp;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity
 		mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
 		settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_setting);
 
-		// 내비게이션 목록을 누르면 해당 액티비티로 이동하게 한다.
+		// 내비게이션 목록을 누르면 해당 프래그먼트 또는 액티비티로 이동하게 한다.
 		navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
 		{
 			@Override
@@ -51,6 +52,13 @@ public class MainActivity extends AppCompatActivity
 			{
 				// 드로어를 닫는다.
 				binding.drawer.closeDrawers();
+
+				// 설정을 눌렀으면 설정 액티비티로 이동한다.
+				if (item.getItemId() == R.id.nav_setting)
+				{
+					startActivity(new Intent(MainActivity.this, SettingActivity.class));
+					return true;
+				}
 
 				// 툴바 메뉴 초기화
 				toolbar.getMenu().clear();
@@ -73,13 +81,6 @@ public class MainActivity extends AppCompatActivity
 					setTitle(R.string.title_record_fragment);
 					toolbar.inflateMenu(R.menu.fragment_record);
 //					toolbar.setOnMenuItemClickListener();
-					break;
-
-				case R.id.nav_setting: // 설정을 눌렀을 때
-					transaction.show(settingFragment);
-					setTitle(R.string.title_setting_fragment);
-					toolbar.inflateMenu(R.menu.fragment_setting);
-					toolbar.setOnMenuItemClickListener(settingFragment);
 					break;
 				}
 				transaction.commit();
