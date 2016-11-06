@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity
 		toggle.syncState();
 
 		// 프래그먼트들을 초기화한다.
-		mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
+		mapFragment = new MapFragment();
+		getSupportFragmentManager().beginTransaction().add(R.id.fragment_parent, mapFragment).commit();
 
 		// 내비게이션 목록을 누르면 해당 프래그먼트 또는 액티비티로 이동하게 한다.
 		navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()

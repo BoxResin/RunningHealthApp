@@ -8,8 +8,7 @@
 	<RelativeLayout
 		android:id = "@+id/activity_main"
 		android:layout_width = "match_parent"
-		android:layout_height = "match_parent"
-		tools:context = "app.boxresin.runninghealthapp.MainActivity">
+		android:layout_height = "match_parent">
 
 		<!-- 맵뷰가 들어갈 자리 -->
 		<FrameLayout
@@ -77,7 +76,6 @@
 			android:layout_height = "wrap_content"
 			android:layout_alignParentBottom = "true"
 			android:layout_alignParentRight = "true"
-			android:layout_marginBottom = "10dp"
 			android:layout_marginRight = "10dp"
 			android:orientation = "vertical">
 
@@ -94,6 +92,10 @@
 				android:layout_width = "45dp"
 				android:layout_height = "45dp"
 				android:src = "@drawable/action_zoom_out"/>
+
+			<View
+				android:layout_width = "1dp"
+				android:layout_height = "10dp"/>
 		</LinearLayout>
 	</RelativeLayout>
 </layout>
