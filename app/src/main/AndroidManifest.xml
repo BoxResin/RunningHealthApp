@@ -24,7 +24,7 @@
 
 		<activity
 			android:name = ".SettingActivity"
-			android:label = "@string/title_setting_fragment">
+			android:label = "@string/title_setting_activity">
 		</activity>
 	</application>
 </manifest>

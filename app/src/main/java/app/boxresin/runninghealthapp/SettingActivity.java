@@ -14,9 +14,8 @@ import app.boxresin.runninghealthapp.databinding.ActivitySettingBinding;
 import global.Settings;
 
 /**
- * Created by eomin on 2016-11-06.
+ * 설정 액티비티
  */
-
 public class SettingActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener
 {
 	private ActivitySettingBinding binding;
@@ -88,7 +87,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 		case android.R.id.home:
 			onBackPressed();
 			return true;
-		
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -2,5 +2,6 @@
 	<string name = "app_name">달리기 운동</string>
 	<string name = "title_map_fragment">달리기 운동</string>
 	<string name = "title_record_fragment">기록</string>
-	<string name = "title_setting_fragment">설정</string>
+	<string name = "title_setting_activity">설정</string>
+	<string name = "title_graph_fragment">그래프</string>
 </resources>
