@@ -25,12 +25,6 @@
 				android:layout_height = "match_parent">
 
 				<fragment
-					android:id="@+id/fragment_setting"
-					android:layout_width = "match_parent"
-					android:layout_height = "match_parent"
-					android:name = "app.boxresin.runninghealthapp.SettingFragment"/>
-
-				<fragment
 					android:id="@+id/fragment_map"
 					android:layout_width = "match_parent"
 					android:layout_height = "match_parent"

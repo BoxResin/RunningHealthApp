@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity
 
 	// 사용할 프래그먼트
 	private MapFragment mapFragment;
-	private SettingFragment settingFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity
 
 		// 프래그먼트들을 초기화한다.
 		mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_map);
-		settingFragment = (SettingFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_setting);
 
 		// 내비게이션 목록을 누르면 해당 프래그먼트 또는 액티비티로 이동하게 한다.
 		navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity
 
 				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 				transaction.hide(mapFragment);
-				transaction.hide(settingFragment);
 
 				switch (item.getItemId())
 				{
@@ -81,6 +78,11 @@ public class MainActivity extends AppCompatActivity
 					setTitle(R.string.title_record_fragment);
 					toolbar.inflateMenu(R.menu.fragment_record);
 //					toolbar.setOnMenuItemClickListener();
+					break;
+
+				case R.id.nav_graph:
+					setTitle("그래프");
+					toolbar.inflateMenu(R.menu.fragment_graph);
 					break;
 				}
 				transaction.commit();

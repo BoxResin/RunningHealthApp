@@ -8,8 +8,12 @@
 			android:title = "지도 화면"/>
 		<item
 			android:id = "@+id/nav_record"
-			android:icon = "@drawable/ic_graph_black"
+			android:icon = "@drawable/action_list_black"
 			android:title = "기록"/>
+		<item
+			android:id = "@+id/nav_graph"
+			android:icon = "@drawable/ic_graph_black"
+			android:title = "그래프"/>
 	</group>
 
 	<item android:title = "기타">
