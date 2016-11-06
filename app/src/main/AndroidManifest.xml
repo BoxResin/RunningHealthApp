@@ -12,6 +12,7 @@
 		android:supportsRtl = "true"
 		android:theme = "@style/AppTheme">
 
+		<!-- 메인 액티비티 (지도, 기록, 그래프 화면을 볼 수 있음) -->
 		<activity android:name = ".MainActivity">
 			<intent-filter>
 				<action android:name = "android.intent.action.MAIN"/>
@@ -19,12 +20,17 @@
 			</intent-filter>
 		</activity>
 
+		<!-- 웰컴 액티비티 (처음 앱 실행하면 나타남) -->
 		<activity android:name = ".WelcomeActivity">
 		</activity>
 
+		<!-- 설정 액티비티 -->
 		<activity
 			android:name = ".SettingActivity"
 			android:label = "@string/title_setting_activity">
 		</activity>
+
+		<!-- 기록을 지도에 보여주는 액티비티 -->
+		<activity android:name = ".RecordViewerActivity"/>
 	</application>
 </manifest>

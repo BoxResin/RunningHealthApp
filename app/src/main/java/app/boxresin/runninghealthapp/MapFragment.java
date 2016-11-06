@@ -1,20 +1,25 @@
 package app.boxresin.runninghealthapp;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
+import data.Record;
 import global.Settings;
 
 
@@ -109,6 +114,41 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 				bStarted = false;
 			}
 		}
+		else
+		{
+			final EditText input = new EditText(getContext());
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT);
+			input.setHint("기록 이름 입력");
+			input.setLayoutParams(layoutParams);
+
+			switch (item.getItemId())
+			{
+			case R.id.action_save_record: // 기록 저장 메뉴
+				// 기록 저장 대화상자를 띄운다.
+				new AlertDialog.Builder(getContext())
+						.setTitle("기록 저장")
+						.setView(input)
+						.setPositiveButton("저장", new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int which)
+							{
+								// 여기서 실제로 기록을 저장한다.
+								Settings.get().getRecordAdapter().add(
+										new Record(input.getText().toString(), 0, 0, 0));
+								Settings.get().getRecordAdapter().notifyDataSetChanged();
+
+								// 기록 프래그먼트로 이동한다.
+								((MainActivity) getActivity()).showRecordFragment();
+							}
+						})
+						.setNegativeButton("취소", null)
+						.show();
+				break;
+			}
+		}
 
 		return false;
 	}
@@ -129,7 +169,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			{
 				bChase = false;
 				binding.btnLocationChase.setImageDrawable(getResources().getDrawable(R.drawable.action_my_location));
-				binding.btnLocationChase.setBackgroundResource(R.drawable.btn_square_flat);
+				binding.btnLocationChase.setBackgroundResource(R.drawable.btn_square_flat_normal);
 			}
 
 			// 현재 위치 추적 켜기

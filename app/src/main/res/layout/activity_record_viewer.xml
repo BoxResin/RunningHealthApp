@@ -1,0 +1,59 @@
+<!-- 기록을 지도 위에 보여주는 액티비티 레이아웃 -->
+<layout
+	xmlns:android = "http://schemas.android.com/apk/res/android"
+	xmlns:tools = "http://schemas.android.com/tools">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<!-- 툴바 영역 -->
+		<include layout = "@layout/toolbar"/>
+
+		<!-- 컨텐츠 영역 -->
+		<RelativeLayout
+			android:layout_width = "match_parent"
+			android:layout_height = "match_parent">
+
+			<!-- 이동 경로 -->
+			<ImageView
+				android:layout_width = "match_parent"
+				android:layout_height = "match_parent"
+				android:scaleType = "fitXY"
+				android:src = "@drawable/sample_map_route"/>
+
+			<!-- 속도, 칼로리 표시 영역 -->
+			<LinearLayout
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_alignParentRight = "true"
+				android:orientation = "vertical"
+				android:padding = "10dp"
+				android:background = "#A0FFFFFF"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
+
+				<TextView
+					android:id = "@+id/txt_elasped"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:layout_gravity = "center"
+					android:textStyle = "bold"
+					tools:text = "%d분 동안"/>
+
+				<TextView
+					android:id = "@+id/txt_moved"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					tools:text = "총 %d ㎞ 이동"/>
+
+				<TextView
+					android:id = "@+id/txt_consumed"
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:textColor = "@color/colorPrimary"
+					tools:text = "총 %d ㎉ 소모"/>
+			</LinearLayout>
+		</RelativeLayout>
+	</LinearLayout>
+
+</layout>

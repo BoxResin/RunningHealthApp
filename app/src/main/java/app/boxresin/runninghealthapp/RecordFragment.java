@@ -1,5 +1,6 @@
 package app.boxresin.runninghealthapp;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import java.util.Locale;
@@ -15,11 +17,12 @@ import java.util.Locale;
 import app.boxresin.runninghealthapp.databinding.FragmentRecordBinding;
 import app.boxresin.runninghealthapp.databinding.ItemRecordBinding;
 import data.Record;
+import global.Settings;
 
 /**
  * 기록 프래그먼트
  */
-public class RecordFragment extends Fragment
+public class RecordFragment extends Fragment implements AdapterView.OnItemClickListener
 {
 	private FragmentRecordBinding binding;
 	private ArrayAdapter<Record> adapter;
@@ -30,6 +33,7 @@ public class RecordFragment extends Fragment
 	{
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record, container, false);
 
+		// 리스트뷰 및 어댑터를 초기화한다.
 		adapter = new ArrayAdapter<Record>(getContext(), R.layout.item_record)
 		{
 			@NonNull
@@ -57,6 +61,8 @@ public class RecordFragment extends Fragment
 			}
 		};
 		binding.listRecord.setAdapter(adapter);
+		binding.listRecord.setOnItemClickListener(this);
+		Settings.get().setRecordAdapter(adapter);
 
 		// NOTE 더미 데이터 추가. 나중에 지울 것
 		adapter.add(new Record("한강 산책", 1.625, 310, 12.6));
@@ -64,5 +70,24 @@ public class RecordFragment extends Fragment
 		adapter.add(new Record("어쩌구 산책", 0.43, 94.7, 7.3));
 
 		return binding.getRoot();
+	}
+
+	/**
+	 * 사용자가 기록 항목을 클릭했을 때 호출되는 메서드
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+	{
+		// 기록 데이터를 가져오고 기록 뷰어 액티비티로 넘긴다.
+		Record record = adapter.getItem(position);
+		if (record != null)
+		{
+			Intent intent = new Intent(getActivity(), RecordViewerActivity.class);
+			intent.putExtra("record_name", record.getName());
+			intent.putExtra("elapsed", record.getElapsed());
+			intent.putExtra("moved", record.getMoved());
+			intent.putExtra("consumed", record.getConsumed());
+			startActivity(intent);
+		}
 	}
 }

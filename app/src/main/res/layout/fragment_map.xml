@@ -26,7 +26,7 @@
 				tools:visibility = "visible"/>
 		</FrameLayout>
 
-		<!-- 속도, 칼로리, 걸음 수 표시 영역 -->
+		<!-- 속도, 칼로리 표시 영역 -->
 		<LinearLayout
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
