@@ -57,6 +57,7 @@
 			android:layout_height = "wrap_content"
 			android:layout_gravity = "center"
 			android:layout_marginTop = "5dp"
+			android:gravity = "right"
 			android:hint = "cm"
 			android:inputType = "number"
 			android:text = ""/>
@@ -73,6 +74,7 @@
 			android:layout_height = "wrap_content"
 			android:layout_gravity = "center"
 			android:layout_marginTop = "5dp"
+			android:gravity = "right"
 			android:hint = "kg"
 			android:inputType = "number"
 			android:text = ""/>
@@ -89,19 +91,19 @@
 			android:layout_height = "wrap_content"
 			android:layout_marginBottom = "20dp"
 			android:layout_marginTop = "5dp"
-			android:checkedButton = "@+id/streetview"
+			android:checkedButton = "@+id/btn_sky_view"
 			android:gravity = "center"
 			android:orientation = "horizontal">
 
 			<RadioButton
-				android:id = "@id/streetview"
+				android:id = "@+id/btn_street_view"
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:layout_marginRight = "25dp"
 				android:text = "지도"/>
 
 			<RadioButton
-				android:id = "@+id/skyview"
+				android:id = "@id/btn_sky_view"
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:layout_marginLeft = "25dp"

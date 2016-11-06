@@ -22,7 +22,7 @@
 		android:layout_height = "wrap_content"
 		android:layout_marginBottom = "70dp"
 		android:gravity = "center"
-		android:text = "정확한 소모 칼로리 계산을 위해 필요합니다!"/>
+		android:text = "정확한 칼로리 소모량 계산을 위해 필요합니다!"/>
 
 	<!-- 성별 선택 부분 -->
 	<RadioGroup
