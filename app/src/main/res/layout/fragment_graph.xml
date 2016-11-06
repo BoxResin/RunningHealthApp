@@ -1,0 +1,51 @@
+<!-- 그래프 프래그먼트 레이아웃 -->
+<layout
+	xmlns:android = "http://schemas.android.com/apk/res/android">
+
+	<RelativeLayout
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent">
+
+		<!-- 그래프 영역 -->
+		<HorizontalScrollView
+			android:layout_width = "match_parent"
+			android:layout_height = "match_parent"
+			android:orientation = "vertical">
+
+			<com.dacer.androidcharts.LineView
+				android:id = "@+id/line_graph_view"
+				android:layout_width = "wrap_content"
+				android:layout_height = "match_parent"
+				android:layout_marginBottom = "15dp"
+				android:layout_marginTop = "60dp"/>
+		</HorizontalScrollView>
+
+		<GridLayout
+			android:layout_width = "wrap_content"
+			android:layout_height = "wrap_content"
+			android:layout_alignParentRight = "true"
+			android:layout_margin = "10dp"
+			android:columnCount = "2"
+			android:rowCount = "2"
+			android:useDefaultMargins = "true">
+
+			<View
+				android:layout_width = "30dp"
+				android:layout_height = "5dp"
+				android:layout_gravity = "center"
+				android:background = "#F00"/>
+
+			<TextView
+				android:text = "총 이동거리 (m)"/>
+
+			<View
+				android:layout_width = "30dp"
+				android:layout_height = "5dp"
+				android:layout_gravity = "center"
+				android:background = "#00F"/>
+
+			<TextView
+				android:text = "총 소모 칼로리 (㎉)"/>
+		</GridLayout>
+	</RelativeLayout>
+</layout>

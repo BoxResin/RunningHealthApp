@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		recordFragment = new RecordFragment();
 		graphFragment = new GraphFragment();
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment_parent, graphFragment)
 				.add(R.id.fragment_parent, recordFragment)
+				.add(R.id.fragment_parent, graphFragment)
 				.add(R.id.fragment_parent, mapFragment)
 		.commit();
 
