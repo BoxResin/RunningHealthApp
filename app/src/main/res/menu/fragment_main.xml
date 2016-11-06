@@ -3,9 +3,18 @@
       xmlns:app = "http://schemas.android.com/apk/res-auto">
 
 	<item
+		android:id="@+id/action_start"
 		android:icon = "@drawable/action_start_white"
 		android:title = "시작"
 		app:showAsAction = "always"/>
 
-	<item android:title = "더미 메뉴"/>
+	<item
+		android:id="@+id/action_save_record"
+		android:title = "기록 저장"/>
+
+	<item android:title = "더미 메뉴1"/>
+
+	<item android:title = "더미 메뉴2"/>
+
+	<item android:title = "더미 메뉴3"/>
 </menu>
