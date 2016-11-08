@@ -1,7 +1,11 @@
 package app.boxresin.runninghealthapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
@@ -26,7 +32,7 @@ import global.Settings;
 /**
  * 지도 화면 프래그먼트
  */
-public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickListener, View.OnClickListener
+public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickListener, View.OnClickListener, LocationListener
 {
 	private FragmentMapBinding binding;
 	private MapView mapView;
@@ -34,7 +40,15 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
 
+	private LocationManager locationManager;
+
 	private static int imgPadding;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+	}
 
 	@Nullable
 	@Override
@@ -103,13 +117,29 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	{
 		if (item.getItemId() == R.id.action_start)
 		{
-			if (!bStarted)
-			{
+			// 위치 기록을 시작해야 할 때
+			if (!bStarted) {
+				// 네트워크 위치제공자가 사용가능한지 확인한다.
+				if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+					Toast.makeText(getActivity(), "네트워크 위치제공자를 사용할 수 없습니다.\n'위치'를 켜주세요.", Toast.LENGTH_SHORT).show();
+					return true;
+				}
+
+				// 위치 기록을 시작한다.
+				//noinspection ResourceType
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 3, this);
+
 				item.setIcon(R.drawable.action_pause_white);
 				bStarted = true;
 			}
+
+			// 위치 기록을 멈춰야 할 때
 			else
 			{
+				// 위치 기록을 중단한다.
+				//noinspection ResourceType
+				locationManager.removeUpdates(this);
+
 				item.setIcon(R.drawable.action_start_white);
 				bStarted = false;
 			}
@@ -191,5 +221,27 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			mapView.zoomOut(true);
 			break;
 		}
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		mapView.removeAllCircles();
+		mapView.addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 3, 0xFFFF0000, 0xFFFF8000));
+		mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+
 	}
 }
