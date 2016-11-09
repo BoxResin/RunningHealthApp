@@ -3,6 +3,7 @@ package app.boxresin.runninghealthapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
@@ -43,6 +45,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	private LocationManager locationManager;
 
 	private static int imgPadding;
+
+	private Location lastLocation; // 마지막 위치
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,7 +131,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 				// 위치 기록을 시작한다.
 				//noinspection ResourceType
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 2, this);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, this);
 
 				item.setIcon(R.drawable.action_pause_white);
 				bStarted = true;
@@ -183,6 +187,15 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		return false;
 	}
 
+	@Override
+	public void onDestroy() {
+		// 위치 기록을 중단한다.
+		//noinspection ResourceType
+		locationManager.removeUpdates(this);
+
+		super.onDestroy();
+	}
+
 	/**
 	 * 지도 위의 버튼을 눌렀을 때 호출되는 메서드
 	 */
@@ -197,6 +210,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 현재 위치 추적 끄기
 			if (bChase)
 			{
+				lastLocation = null;
 				bChase = false;
 				binding.btnLocationChase.setImageDrawable(getResources().getDrawable(R.drawable.action_my_location));
 				binding.btnLocationChase.setBackgroundResource(R.drawable.btn_square_flat_normal);
@@ -225,9 +239,21 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 	@Override
 	public void onLocationChanged(Location location) {
+		if (lastLocation == null) {
+			lastLocation = location;
+			return;
+		}
+		MapPolyline line = new MapPolyline();
+		line.addPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()));
+		line.addPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()));
+		line.setLineColor(Color.argb(128, 255, 51, 0));
+
+		mapView.addPolyline(line);
 		mapView.removeAllCircles();
-		mapView.addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 3, 0xFFFF0000, 0xFFFF8000));
+		mapView.addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
 		mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
+
+		lastLocation = location;
 	}
 
 	@Override
