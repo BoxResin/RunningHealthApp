@@ -127,7 +127,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 				// 위치 기록을 시작한다.
 				//noinspection ResourceType
-				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 3, this);
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 2, this);
 
 				item.setIcon(R.drawable.action_pause_white);
 				bStarted = true;

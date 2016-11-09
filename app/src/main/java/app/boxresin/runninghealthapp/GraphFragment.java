@@ -45,6 +45,7 @@ public class GraphFragment extends Fragment
 		lineView = (LineView) binding.getRoot().findViewById(R.id.line_graph_view);
 		lineView.setDrawDotLine(true);
 		lineView.setShowPopup(LineView.SHOW_POPUPS_All);
+
 		syncRecordData();
 
 		// 기록 데이터 어댑터에 옵저버를 설치하여 기록 데이터의 변화를 감시한다.
