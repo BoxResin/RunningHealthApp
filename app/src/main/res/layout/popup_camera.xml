@@ -1,0 +1,17 @@
+<!-- 카메라 팝업 레이아웃 -->
+<layout
+	xmlns:android = "http://schemas.android.com/apk/res/android">
+
+	<LinearLayout
+		android:layout_width = "150dp"
+		android:layout_height = "150dp"
+		android:background = "#FFFF00"
+		android:orientation = "vertical">
+
+		<SurfaceView
+			android:id="@+id/surface_camera"
+			android:layout_width = "150dp"
+			android:layout_height = "150dp"
+			android:background = "#FFFF00"/>
+	</LinearLayout>
+</layout>

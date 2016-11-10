@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.MapCircle;
@@ -27,8 +28,10 @@ import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
+import app.boxresin.runninghealthapp.databinding.PopupCameraBinding;
 import data.Record;
 import global.Settings;
+import util.CameraPopup;
 import util.DaumMapView;
 
 
@@ -38,6 +41,9 @@ import util.DaumMapView;
 public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickListener, View.OnClickListener, LocationListener
 {
 	private FragmentMapBinding binding;
+	private PopupCameraBinding cameraBinding;
+
+	private PopupWindow cameraWindow; // 카메라 팝업 윈도우
 
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
@@ -91,6 +97,11 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		binding.btnLocationChase.setOnClickListener(this);
 		binding.btnZoomIn.setOnClickListener(this);
 		binding.btnZoomOut.setOnClickListener(this);
+
+		// 카메라 팝업을 초기화한다.
+		cameraBinding = DataBindingUtil.inflate(inflater, R.layout.popup_camera, null, false);
+		cameraWindow = new PopupWindow(cameraBinding.getRoot(), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		CameraPopup.init(cameraWindow, cameraBinding);
 
 		return binding.getRoot();
 	}
@@ -190,7 +201,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 				bStarted = false;
 			}
 		}
-		else
+
+		// 기록 저장 메뉴
+		else if (item.getItemId() == R.id.action_save_record)
 		{
 			final EditText input = new EditText(getContext());
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -235,7 +248,40 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			}
 		}
 
+		// 불러온 이동궤적 삭제 메뉴
+		else if (item.getItemId() == R.id.action_remove_loadrd_lines)
+		{
+			DaumMapView.get(getContext()).removePolyline(loadedLine);
+			loadedLine = new MapPolyline();
+			loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
+			DaumMapView.get(getContext()).addPolyline(loadedLine);
+		}
+
+		// 카메라 메뉴
+		else if (item.getItemId() == R.id.action_camera)
+		{
+			// 카메라 팝업 숨기기
+			if (cameraWindow.isShowing())
+			{
+				cameraWindow.dismiss();
+			}
+
+			// 카메라 팝업 나타내기
+			else
+			{
+				CameraPopup.show(cameraWindow, cameraBinding.getRoot());
+			}
+		}
+
 		return false;
+	}
+
+	@Override
+	public void onDestroyView()
+	{
+		cameraWindow.dismiss();
+		DaumMapView.resetParent(getContext(), binding.mapViewParent);
+		super.onDestroyView();
 	}
 
 	@Override
@@ -330,9 +376,10 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	 */
 	public void setLoadedLines(MapPolyline line)
 	{
-		DaumMapView.get(getContext()).removePolyline(loadedLine);
+		DaumMapView.get(getContext()).removeAllPolylines();
 		loadedLine = line;
 		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
 		DaumMapView.get(getContext()).addPolyline(loadedLine);
+		DaumMapView.get(getContext()).addPolyline(traceLine);
 	}
 }

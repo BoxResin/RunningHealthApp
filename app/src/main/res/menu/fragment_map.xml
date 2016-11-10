@@ -11,4 +11,12 @@
 	<item
 		android:id="@+id/action_save_record"
 		android:title = "기록 저장"/>
+
+	<item
+		android:id="@+id/action_remove_loadrd_lines"
+		android:title = "불러온 이동궤적 삭제"/>
+
+	<item
+		android:id="@+id/action_camera"
+		android:title = "카메라"/>
 </menu>
