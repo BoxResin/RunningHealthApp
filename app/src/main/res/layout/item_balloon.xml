@@ -2,10 +2,28 @@
 	xmlns:android = "http://schemas.android.com/apk/res/android"
 	xmlns:tools = "http://schemas.android.com/tools">
 
-	<ImageView
-		android:id = "@+id/img"
-		android:layout_width = "120dp"
-		android:layout_height = "170dp"
-		android:scaleType = "fitXY"
-		tools:src = "@drawable/sample_map"/>
+	<LinearLayout
+		android:layout_width = "wrap_content"
+		android:layout_height = "wrap_content"
+		android:orientation = "vertical">
+
+		<TextView
+			android:id = "@+id/txt_title"
+			android:layout_width = "match_parent"
+			android:layout_height = "wrap_content"
+			android:gravity = "center"
+			android:textSize = "20sp"
+			android:textStyle = "bold"
+			android:visibility = "gone"
+			tools:text = "타이틀"
+			tools:visibility = "visible"/>
+
+		<ImageView
+			android:id = "@+id/img"
+			android:layout_width = "120dp"
+			android:layout_height = "170dp"
+			android:scaleType = "fitXY"
+			tools:src = "@drawable/sample_map"/>
+	</LinearLayout>
+
 </layout>

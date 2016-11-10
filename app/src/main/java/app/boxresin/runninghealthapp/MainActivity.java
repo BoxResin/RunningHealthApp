@@ -17,6 +17,7 @@ import android.view.View;
 
 import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
 import util.LocationConverter;
+import view.CameraSurface;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -245,5 +246,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	{
 		recordFragment.binding.cameraView.setX(x);
 		recordFragment.binding.cameraView.setY(y);
+	}
+
+	public CameraSurface getCameraView()
+	{
+		return recordFragment.binding.cameraView;
 	}
 }

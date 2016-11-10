@@ -1,17 +1,34 @@
 package view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 {
-	SurfaceHolder holder;
-	static Camera mCamera;
+	private SurfaceHolder holder;
+	private static Camera mCamera;
+	private BitmapTakenListener listener;
+
+	public interface BitmapTakenListener
+	{
+		void onBitmapCaptured(Bitmap bitmap);
+	}
+
+	public void takePreview(BitmapTakenListener listener)
+	{
+		this.listener = listener;
+	}
 
 	public CameraSurface(Context context)
 	{
@@ -67,6 +84,39 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 			mCamera = Camera.open();
 			mCamera.setPreviewDisplay(holder);
 			mCamera.setDisplayOrientation(90);
+			mCamera.setPreviewCallback(new Camera.PreviewCallback()
+			{
+				@Override
+				public void onPreviewFrame(byte[] data, Camera camera)
+				{
+					if (listener != null)
+					{
+						Camera.Parameters params = mCamera.getParameters();
+
+						int w = params.getPreviewSize().width;
+
+						int h = params.getPreviewSize().height;
+
+						int format = params.getPreviewFormat();
+
+						YuvImage image = new YuvImage(data, format, w, h, null);
+
+
+
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+						Rect area = new Rect(0, 0, w, h);
+
+						image.compressToJpeg(area, 75, out);
+
+						Bitmap captureImg = BitmapFactory.decodeByteArray(out.toByteArray(), 0, out.size());
+						Matrix matrix = new Matrix();
+						matrix.postRotate(90);
+						listener.onBitmapCaptured(Bitmap.createBitmap(captureImg, 0, 0, captureImg.getWidth(), captureImg.getHeight(), matrix, true));
+						listener = null;
+					}
+				}
+			});
 		}
 		catch (Exception e)
 		{
@@ -77,6 +127,7 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder)
 	{
+		mCamera.setPreviewCallback(null);
 		mCamera.stopPreview();
 		mCamera.release();
 	}

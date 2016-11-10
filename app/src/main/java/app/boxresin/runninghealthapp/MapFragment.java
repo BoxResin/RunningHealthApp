@@ -3,6 +3,8 @@ package app.boxresin.runninghealthapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.MapCircle;
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
@@ -32,6 +36,7 @@ import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
 import data.Record;
 import global.DaumMapView;
 import global.Settings;
+import view.CameraSurface;
 
 /**
  * 지도 화면 프래그먼트
@@ -123,6 +128,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		binding.btnLocationChase.setOnClickListener(this);
 		binding.btnZoomIn.setOnClickListener(this);
 		binding.btnZoomOut.setOnClickListener(this);
+		binding.btnTakePhoto.setOnClickListener(this);
 
 		return binding.getRoot();
 	}
@@ -364,6 +370,35 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		case R.id.btn_zoom_out: // 지도 축소 버튼
 			DaumMapView.get(getContext()).zoomOut(true);
 			break;
+
+		case R.id.btn_take_photo: // 사진찍기 버튼
+			if (lastLocation != null)
+			{
+				((MainActivity) getActivity()).getCameraView().takePreview(new CameraSurface.BitmapTakenListener()
+				{
+					@Override
+					public void onBitmapCaptured(Bitmap bitmap)
+					{
+//						ItemBalloonBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.item_balloon, null, false);
+//      				binding.img.setImageBitmap(viewToBitmap(((MainActivity) getActivity()).getCameraView()));
+
+						MapPOIItem marker = new MapPOIItem();
+						marker.setItemName("사진");
+						marker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+//		        		marker.setCustomCalloutBalloonBitmap(((BitmapDrawable) getResources().getDrawable(R.drawable.icon)).getBitmap());
+//						Bitmap bitmap = viewToBitmap(((MainActivity) getActivity()).getCameraView());
+//						binding.btnTakePhoto.setImageBitmap(bitmap); // TODO 삭제할 것
+						marker.setCustomCalloutBalloonBitmap(bitmap);
+						marker.setCustomImageResourceId(R.drawable.custom_marker_red);
+						marker.setCustomImageAutoscale(false);
+						marker.setCustomImageAnchor(0.5f, 1.0f);
+//			        	marker.setCustomPressedCalloutBalloon(binding.getRoot());
+						marker.setMapPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()));
+						DaumMapView.get(getContext()).addPOIItem(marker);
+					}
+				});
+			}
+			break;
 		}
 	}
 
@@ -410,5 +445,18 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
 		DaumMapView.get(getContext()).addPolyline(loadedLine);
 		DaumMapView.get(getContext()).addPolyline(traceLine);
+	}
+
+	/**
+	 * 뷰에 그려진 그림을 Bitmap으로 가져오는 메서드
+	 */
+	private static Bitmap viewToBitmap(SurfaceView view)
+	{
+		Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		view.setZOrderOnTop(true);
+		view.draw(canvas);
+		view.setZOrderOnTop(false);
+		return bitmap;
 	}
 }
