@@ -19,7 +19,7 @@ import net.daum.mf.map.api.MapPolyline;
 import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.ActivityRecordViewerBinding;
-import util.DaumMapView;
+import global.DaumMapView;
 import util.LocationConverter;
 
 /**

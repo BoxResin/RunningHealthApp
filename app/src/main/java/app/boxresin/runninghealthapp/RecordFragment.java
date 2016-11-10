@@ -24,7 +24,7 @@ import global.Settings;
  */
 public class RecordFragment extends Fragment implements AdapterView.OnItemClickListener
 {
-	private FragmentRecordBinding binding;
+	FragmentRecordBinding binding;
 	private ArrayAdapter<Record> adapter;
 
 	@Nullable

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
 import util.LocationConverter;
@@ -62,6 +63,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		// 내비게이션 드로어에서, 지도 화면에 체크한다.
 		navView.setCheckedItem(R.id.nav_main);
+
+		binding.getRoot().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				showCamera(false);
+			}
+		}, 50);
 	}
 
 	/**
@@ -143,6 +153,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		// 툴바 메뉴 초기화
 		toolbar.getMenu().clear();
 
+		// 카메라 숨기기
+		showCamera(false);
+
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		transaction.hide(mapFragment);
 		transaction.hide(recordFragment);
@@ -206,5 +219,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		getMenuInflater().inflate(R.menu.fragment_map, menu);
 		toolbar.setOnMenuItemClickListener(mapFragment);
 		return true;
+	}
+
+	/**
+	 * 카메라를 on/off 하는 메서드
+	 */
+	public void showCamera(boolean bShow)
+	{
+		if (bShow)
+		{
+			recordFragment.binding.cameraView.setVisibility(View.VISIBLE);
+		}
+		else
+		{
+			recordFragment.binding.cameraView.setVisibility(View.GONE);
+		}
 	}
 }

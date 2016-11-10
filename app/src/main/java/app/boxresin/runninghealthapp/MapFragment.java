@@ -32,7 +32,7 @@ import app.boxresin.runninghealthapp.databinding.PopupCameraBinding;
 import data.Record;
 import global.Settings;
 import util.CameraPopup;
-import util.DaumMapView;
+import global.DaumMapView;
 
 
 /**
@@ -47,6 +47,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
+	private boolean bCamera; // 카메라 띄우기 여부
 	private boolean isPaused; // 프래그먼트가 현재 onPause된 상태인지
 
 	private MapView lastMapView; // 마지막으로 사용된 맵뷰
@@ -141,6 +142,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		{
 			// 환경설정대로 지도 표시 형태를 갱신한다.
 			DaumMapView.get(getContext()).setMapType(Settings.get().getMapType());
+
+			// 카메라를 띄울지 말지 결정한다.
+			((MainActivity) getActivity()).showCamera(bCamera);
 		}
 	}
 
@@ -165,6 +169,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			menu.findItem(R.id.action_start).setIcon(R.drawable.action_pause_white);
 		else
 			menu.findItem(R.id.action_start).setIcon(R.drawable.action_start_white);
+
+		menu.findItem(R.id.action_camera).setChecked(bCamera);
 	}
 
 	/**
@@ -264,15 +270,19 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		else if (item.getItemId() == R.id.action_camera)
 		{
 			// 카메라 팝업 숨기기
-			if (cameraWindow.isShowing())
+			if (item.isChecked())
 			{
-				cameraWindow.dismiss();
+				bCamera = false;
+				item.setChecked(false);
+				((MainActivity) getActivity()).showCamera(false);
 			}
 
 			// 카메라 팝업 나타내기
 			else
 			{
-				CameraPopup.show(cameraWindow, cameraBinding.getRoot());
+				bCamera = true;
+				item.setChecked(true);
+				((MainActivity) getActivity()).showCamera(true);
 			}
 		}
 

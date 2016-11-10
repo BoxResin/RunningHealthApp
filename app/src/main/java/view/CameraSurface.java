@@ -13,6 +13,15 @@ public class CameraSurface extends SurfaceView implements SurfaceHolder.Callback
 	SurfaceHolder holder;
 	static Camera mCamera;
 
+	public CameraSurface(Context context)
+	{
+		super(context);
+
+		holder = getHolder();
+		holder.addCallback(this);
+		holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+	}
+
 	public CameraSurface(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);

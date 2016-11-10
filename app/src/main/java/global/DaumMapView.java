@@ -1,12 +1,10 @@
-package util;
+package global;
 
 import android.content.Context;
 import android.view.ViewGroup;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
-
-import global.Settings;
 
 /**
  * 다음 맵 뷰가 하나만 생성되도록 하기 위한 싱글톤

@@ -3,20 +3,21 @@
       xmlns:app = "http://schemas.android.com/apk/res-auto">
 
 	<item
-		android:id="@+id/action_start"
+		android:id = "@+id/action_start"
 		android:icon = "@drawable/action_start_white"
 		android:title = "시작"
 		app:showAsAction = "always"/>
 
 	<item
-		android:id="@+id/action_save_record"
+		android:id = "@+id/action_save_record"
 		android:title = "기록 저장"/>
 
 	<item
-		android:id="@+id/action_remove_loadrd_lines"
+		android:id = "@+id/action_remove_loadrd_lines"
 		android:title = "불러온 이동궤적 삭제"/>
 
 	<item
-		android:id="@+id/action_camera"
+		android:id = "@+id/action_camera"
+		android:checkable = "true"
 		android:title = "카메라"/>
 </menu>
