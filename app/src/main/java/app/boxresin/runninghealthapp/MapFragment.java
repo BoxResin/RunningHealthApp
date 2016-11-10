@@ -125,7 +125,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			if (!bStarted) {
 				// 네트워크 위치제공자가 사용가능한지 확인한다.
 				if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-					Toast.makeText(getActivity(), "네트워크 위치제공자를 사용할 수 없습니다.\n'위치'를 켜주세요.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "현재 위치제공자를 사용할 수 없습니다.\n설정에서 '위치'를 켜주세요.", Toast.LENGTH_SHORT).show();
 					return true;
 				}
 
