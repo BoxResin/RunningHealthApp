@@ -93,6 +93,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
 		initMapView();
 
+		// 카메라 뷰를 초기화한다.
+
+
 		// 버튼을 초기화한다.
 		binding.btnLocationChase.setOnClickListener(this);
 		binding.btnZoomIn.setOnClickListener(this);
