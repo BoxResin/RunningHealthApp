@@ -97,5 +97,11 @@
 				android:layout_width = "1dp"
 				android:layout_height = "10dp"/>
 		</LinearLayout>
+
+		<!-- 카메라 뷰를 대신해서 터치 이벤트를 받는 뷰 -->
+		<FrameLayout
+			android:id = "@+id/for_touchevent"
+			android:layout_width = "120dp"
+			android:layout_height = "170dp"/>
 	</RelativeLayout>
 </layout>

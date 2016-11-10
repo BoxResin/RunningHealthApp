@@ -15,11 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import net.daum.mf.map.api.MapCircle;
@@ -28,22 +29,16 @@ import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
-import app.boxresin.runninghealthapp.databinding.PopupCameraBinding;
 import data.Record;
-import global.Settings;
-import util.CameraPopup;
 import global.DaumMapView;
-
+import global.Settings;
 
 /**
  * 지도 화면 프래그먼트
  */
 public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickListener, View.OnClickListener, LocationListener
 {
-	private FragmentMapBinding binding;
-	private PopupCameraBinding cameraBinding;
-
-	private PopupWindow cameraWindow; // 카메라 팝업 윈도우
+	FragmentMapBinding binding;
 
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
@@ -94,18 +89,40 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
 		initMapView();
 
-		// 카메라 뷰를 초기화한다.
+		binding.forTouchevent.setOnTouchListener(new View.OnTouchListener()
+		{
+			private int _xDelta;
+			private int _yDelta;
 
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				final int X = (int) event.getRawX();
+				final int Y = (int) event.getRawY();
+				switch (event.getAction() & MotionEvent.ACTION_MASK)
+				{
+				case MotionEvent.ACTION_DOWN:
+					RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) binding.forTouchevent.getLayoutParams();
+					_xDelta = X - lParams.leftMargin;
+					_yDelta = Y - lParams.topMargin;
+					return true;
+
+				case MotionEvent.ACTION_MOVE:
+					RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) binding.forTouchevent.getLayoutParams();
+					layoutParams.leftMargin = X - _xDelta;
+					layoutParams.topMargin = Y - _yDelta;
+					binding.forTouchevent.setLayoutParams(layoutParams);
+					((MainActivity) getActivity()).moveCamera(layoutParams.leftMargin, layoutParams.topMargin);
+					return true;
+				}
+				return false;
+			}
+		});
 
 		// 버튼을 초기화한다.
 		binding.btnLocationChase.setOnClickListener(this);
 		binding.btnZoomIn.setOnClickListener(this);
 		binding.btnZoomOut.setOnClickListener(this);
-
-		// 카메라 팝업을 초기화한다.
-		cameraBinding = DataBindingUtil.inflate(inflater, R.layout.popup_camera, null, false);
-		cameraWindow = new PopupWindow(cameraBinding.getRoot(), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		CameraPopup.init(cameraWindow, cameraBinding);
 
 		return binding.getRoot();
 	}
@@ -292,7 +309,6 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	@Override
 	public void onDestroyView()
 	{
-		cameraWindow.dismiss();
 		DaumMapView.resetParent(getContext(), binding.mapViewParent);
 		super.onDestroyView();
 	}

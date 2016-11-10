@@ -228,11 +228,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	{
 		if (bShow)
 		{
+			mapFragment.binding.forTouchevent.setVisibility(View.VISIBLE);
 			recordFragment.binding.cameraView.setVisibility(View.VISIBLE);
 		}
 		else
 		{
+			mapFragment.binding.forTouchevent.setVisibility(View.GONE);
 			recordFragment.binding.cameraView.setVisibility(View.GONE);
 		}
+	}
+
+	/**
+	 * 카메라를 움직이는 메서드
+	 */
+	public void moveCamera(int x, int y)
+	{
+		recordFragment.binding.cameraView.setX(x);
+		recordFragment.binding.cameraView.setY(y);
 	}
 }
