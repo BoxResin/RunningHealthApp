@@ -33,7 +33,7 @@
 				android:layout_width = "30dp"
 				android:layout_height = "5dp"
 				android:layout_gravity = "center"
-				android:background = "#F00"/>
+				android:background = "#E74C3C"/>
 
 			<TextView
 				android:text = "총 이동거리 (m)"/>
@@ -42,7 +42,7 @@
 				android:layout_width = "30dp"
 				android:layout_height = "5dp"
 				android:layout_gravity = "center"
-				android:background = "#00F"/>
+				android:background = "#2980B9"/>
 
 			<TextView
 				android:text = "총 소모 칼로리 (㎉)"/>

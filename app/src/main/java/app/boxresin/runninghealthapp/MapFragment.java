@@ -324,4 +324,15 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	{
 
 	}
+
+	/**
+	 * 기록의 궤적을 지도로 불러오는 메서드
+	 */
+	public void setLoadedLines(MapPolyline line)
+	{
+		DaumMapView.get(getContext()).removePolyline(loadedLine);
+		loadedLine = line;
+		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
+		DaumMapView.get(getContext()).addPolyline(loadedLine);
+	}
 }

@@ -3,6 +3,8 @@ package app.boxresin.runninghealthapp;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -13,10 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
+import util.LocationConverter;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+	private Handler handler = new Handler();
+
 	private ActivityMainBinding binding;
 	private Toolbar toolbar;
 	private NavigationView navView;
@@ -57,6 +62,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		// 내비게이션 드로어에서, 지도 화면에 체크한다.
 		navView.setCheckedItem(R.id.nav_main);
+	}
+
+	/**
+	 * 새 인텐트를 받았을 때 호출되는 메서드
+	 */
+	@Override
+	protected void onNewIntent(final Intent intent)
+	{
+		// 다음 맵뷰가 동시에 두 개 이상 공존할 수 없다는 제약 때문에 잠깐 뒤에 처리한다.
+		handler.post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				// 어느 탭으로 이동해야 하는지 알아낸다.
+				String nav = intent.getStringExtra("nav");
+				if (nav != null)
+				{
+					switch (nav)
+					{
+					case "map":
+						showMapFragment();
+						break;
+
+					case "record":
+						showRecordFragment();
+						break;
+
+					case "graph":
+						showGraphFragment();
+						break;
+					}
+				}
+
+				// 옛날 기록의 위치 데이터가 있으면 지도에 소환한다.
+				Parcelable[] locations = intent.getParcelableArrayExtra("location_data");
+				if (locations != null)
+					mapFragment.setLoadedLines(LocationConverter.toPolyline(locations));
+			}
+		});
 	}
 
 	@Override
