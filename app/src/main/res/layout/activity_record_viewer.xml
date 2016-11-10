@@ -62,7 +62,33 @@
 					android:textColor = "@color/colorPrimary"
 					tools:text = "총 %d ㎉ 소모"/>
 			</LinearLayout>
+
+			<!-- 최고속도 최저속도 표시 영역 -->
+			<GridLayout
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:layout_alignParentBottom = "true"
+				android:layout_alignParentRight = "true"
+				android:background = "#A0FFFFFF"
+				android:columnCount = "2"
+				android:padding = "10dp"
+				android:rowCount = "2"
+				android:useDefaultMargins = "true">
+
+				<TextView
+					android:text = "순간 최고"/>
+
+				<TextView
+					android:layout_gravity = "right"
+					android:text = "12.7 ㎞/h"/>
+
+				<TextView
+					android:text = "순간 최저"/>
+
+				<TextView
+					android:layout_gravity = "right"
+					android:text = "2.4 ㎞/h"/>
+			</GridLayout>
 		</RelativeLayout>
 	</LinearLayout>
-
 </layout>
