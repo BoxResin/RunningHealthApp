@@ -41,7 +41,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
-	private boolean isPaused; // 프래그먼트가 현재 멈춰진 상태인지
+	private boolean isPaused; // 프래그먼트가 현재 onPause된 상태인지
 
 	private MapView lastMapView; // 마지막으로 사용된 맵뷰
 
@@ -215,6 +215,13 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 								Settings.get().getRecordAdapter().add(
 										new Record(input.getText().toString(), 0, 0, 0));
 								Settings.get().getRecordAdapter().notifyDataSetChanged();
+
+								// 화면의 이동궤적을 지운다.
+								DaumMapView.get(getContext()).removeAllPolylines();
+								DaumMapView.get(getContext()).removeAllCircles();
+								lastLocation = null;
+								traceLine = new MapPolyline();
+								loadedLine = new MapPolyline();
 
 								// 기록 프래그먼트로 이동한다.
 								((MainActivity) getActivity()).showRecordFragment();

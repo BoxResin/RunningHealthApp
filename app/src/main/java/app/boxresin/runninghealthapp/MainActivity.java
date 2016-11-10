@@ -119,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		toolbar.setOnMenuItemClickListener(mapFragment);
 		mapFragment.syncMenuStatus(toolbar.getMenu());
 		transaction.commit();
+
+		navView.setCheckedItem(R.id.nav_main);
 	}
 
 	/**
@@ -133,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		setTitle(R.string.title_record_fragment);
 		toolbar.inflateMenu(R.menu.fragment_record);
 		transaction.commit();
+
+		navView.setCheckedItem(R.id.nav_record);
 	}
 
 	/**
@@ -147,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		setTitle(getString(R.string.title_graph_fragment));
 		toolbar.inflateMenu(R.menu.fragment_graph);
 		transaction.commit();
+
+		navView.setCheckedItem(R.id.nav_graph);
 	}
 
 	@Override
