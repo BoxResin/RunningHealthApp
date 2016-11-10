@@ -41,12 +41,16 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
-
-	private LocationManager locationManager;
-
-	private Location lastLocation; // 마지막 위치
+	private boolean isPaused; // 프래그먼트가 현재 멈춰진 상태인지
 
 	private MapView lastMapView; // 마지막으로 사용된 맵뷰
+
+	private MapPolyline traceLine = new MapPolyline(); // 이동 궤적
+	private MapPolyline loadedLine = new MapPolyline(); // 이전 기록에서 불러온 궤적
+
+	private Location lastLocation; // 마지막으로 있었던 위치
+
+	private LocationManager locationManager;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
@@ -59,14 +63,21 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	public void onStart()
 	{
 		super.onStart();
+		isPaused = false;
 
 		// 맵뷰가 삭제되었는지 확인한다.
 		if (lastMapView != DaumMapView.get(getContext()))
 		{
 			// 맵뷰가 삭제되었으면 새로 만들어 화면에 추가한다.
-			lastMapView = DaumMapView.get(getContext());
-			DaumMapView.changeParent(getContext(), binding.mapViewParent);
+			initMapView();
 		}
+	}
+
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		isPaused = true;
 	}
 
 	@Nullable
@@ -74,10 +85,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
-
-		// 화면에 맵뷰를 추가한다.
-		lastMapView = DaumMapView.get(getContext());
-		DaumMapView.changeParent(getContext(), binding.mapViewParent);
+		initMapView();
 
 		// 버튼을 초기화한다.
 		binding.btnLocationChase.setOnClickListener(this);
@@ -85,6 +93,28 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		binding.btnZoomOut.setOnClickListener(this);
 
 		return binding.getRoot();
+	}
+
+	/**
+	 * 맵뷰를 초기화하는 메서드
+	 */
+	private void initMapView()
+	{
+		// 화면에 맵뷰를 추가한다.
+		lastMapView = DaumMapView.get(getContext());
+		DaumMapView.changeParent(getContext(), binding.mapViewParent);
+		traceLine.setLineColor(Color.argb(128, 255, 51, 0));
+		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
+		lastMapView.addPolyline(traceLine);
+		lastMapView.addPolyline(loadedLine);
+
+		// 마지막 위치가 있으면 그 위치로 이동한다.
+		if (lastLocation != null)
+		{
+			lastMapView.addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(
+					lastLocation.getLatitude(), lastLocation.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
+			lastMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()), true);
+		}
 	}
 
 	/**
@@ -223,7 +253,6 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 현재 위치 추적 끄기
 			if (bChase)
 			{
-				lastLocation = null;
 				bChase = false;
 				binding.btnLocationChase.setImageDrawable(getResources().getDrawable(R.drawable.action_my_location));
 				binding.btnLocationChase.setBackgroundResource(R.drawable.btn_square_flat_normal);
@@ -253,22 +282,16 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	@Override
 	public void onLocationChanged(Location location)
 	{
-		if (lastLocation == null)
-		{
-			lastLocation = location;
-			return;
-		}
-		MapPolyline line = new MapPolyline();
-		line.addPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()));
-		line.addPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()));
-		line.setLineColor(Color.argb(128, 255, 51, 0));
+		lastLocation = location;
 
-		DaumMapView.get(getContext()).addPolyline(line);
+		traceLine.addPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()));
+
 		DaumMapView.get(getContext()).removeAllCircles();
 		DaumMapView.get(getContext()).addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
-		DaumMapView.get(getContext()).setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
 
-		lastLocation = location;
+		// 현재 위치 추적 상태일 때만 지도를 현재 위치로 이동시킨다.
+		if (bChase)
+			DaumMapView.get(getContext()).setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
 	}
 
 	@Override
