@@ -24,11 +24,11 @@ import android.widget.Toast;
 import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
-import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
 import data.Record;
 import global.Settings;
+import util.DaumMapView;
 
 
 /**
@@ -37,19 +37,17 @@ import global.Settings;
 public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickListener, View.OnClickListener, LocationListener
 {
 	private FragmentMapBinding binding;
-	private MapView mapView;
 
 	private boolean bStarted; // 위치 기록 시작 여부
 	private boolean bChase; // 현재 위치 추적 여부
 
 	private LocationManager locationManager;
 
-	private static int imgPadding;
-
 	private Location lastLocation; // 마지막 위치
 
 	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
+	public void onCreate(@Nullable Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 	}
@@ -60,14 +58,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	{
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
 
-		// 맵뷰를 초기화한다.
-		mapView = new MapView(getActivity());
-		mapView.setDaumMapApiKey("d7430f85cbcf60aced1e2c584ae6361f"); // 다음 API 키 적용
-		mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.494632, 126.959854), -2, true); // 정보대 위치로 이동
-		mapView.setMapType(Settings.get().getMapType()); // 지도 표시 형식(약도, 위성 사진 등)은 설정값대로
-
 		// 화면에 맵뷰를 추가한다.
-		binding.mapViewParent.addView(mapView);
+		DaumMapView.changeParent(getContext(), binding.mapViewParent);
 
 		// 버튼을 초기화한다.
 		binding.btnLocationChase.setOnClickListener(this);
@@ -86,7 +78,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		if (!hidden)
 		{
 			// 환경설정대로 지도 표시 형태를 갱신한다.
-			mapView.setMapType(Settings.get().getMapType());
+			DaumMapView.get(getContext()).setMapType(Settings.get().getMapType());
 		}
 	}
 
@@ -99,7 +91,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		super.onResume();
 
 		// 환경설정대로 지도 표시 형태를 갱신한다.
-		mapView.setMapType(Settings.get().getMapType());
+		DaumMapView.get(getContext()).setMapType(Settings.get().getMapType());
 	}
 
 	/**
@@ -122,9 +114,11 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		if (item.getItemId() == R.id.action_start)
 		{
 			// 위치 기록을 시작해야 할 때
-			if (!bStarted) {
+			if (!bStarted)
+			{
 				// 네트워크 위치제공자가 사용가능한지 확인한다.
-				if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+				if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+				{
 					Toast.makeText(getActivity(), "현재 위치제공자를 사용할 수 없습니다.\n설정에서 '위치'를 켜주세요.", Toast.LENGTH_SHORT).show();
 					return true;
 				}
@@ -188,7 +182,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	}
 
 	@Override
-	public void onDestroy() {
+	public void onDestroy()
+	{
 		// 위치 기록을 중단한다.
 		//noinspection ResourceType
 		locationManager.removeUpdates(this);
@@ -205,7 +200,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		switch (v.getId())
 		{
 		case R.id.btn_location_chase: // 위치 추적 버튼
-			imgPadding = binding.btnLocationChase.getPaddingLeft();
+			int imgPadding = binding.btnLocationChase.getPaddingLeft();
 
 			// 현재 위치 추적 끄기
 			if (bChase)
@@ -228,18 +223,20 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			break;
 
 		case R.id.btn_zoom_in: // 지도 확대 버튼
-			mapView.zoomIn(true);
+			DaumMapView.get(getContext()).zoomIn(true);
 			break;
 
 		case R.id.btn_zoom_out: // 지도 축소 버튼
-			mapView.zoomOut(true);
+			DaumMapView.get(getContext()).zoomOut(true);
 			break;
 		}
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {
-		if (lastLocation == null) {
+	public void onLocationChanged(Location location)
+	{
+		if (lastLocation == null)
+		{
 			lastLocation = location;
 			return;
 		}
@@ -248,26 +245,29 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		line.addPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()));
 		line.setLineColor(Color.argb(128, 255, 51, 0));
 
-		mapView.addPolyline(line);
-		mapView.removeAllCircles();
-		mapView.addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
-		mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
+		DaumMapView.get(getContext()).addPolyline(line);
+		DaumMapView.get(getContext()).removeAllCircles();
+		DaumMapView.get(getContext()).addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
+		DaumMapView.get(getContext()).setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
 
 		lastLocation = location;
 	}
 
 	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
+	public void onStatusChanged(String provider, int status, Bundle extras)
+	{
 
 	}
 
 	@Override
-	public void onProviderEnabled(String provider) {
+	public void onProviderEnabled(String provider)
+	{
 
 	}
 
 	@Override
-	public void onProviderDisabled(String provider) {
+	public void onProviderDisabled(String provider)
+	{
 
 	}
 }
