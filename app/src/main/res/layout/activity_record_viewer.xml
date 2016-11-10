@@ -4,9 +4,9 @@
 	xmlns:tools = "http://schemas.android.com/tools">
 
 	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent"
+		android:orientation = "vertical">
 
 		<!-- 툴바 영역 -->
 		<include layout = "@layout/toolbar"/>
@@ -16,21 +16,30 @@
 			android:layout_width = "match_parent"
 			android:layout_height = "match_parent">
 
-			<!-- 이동 경로 -->
-			<ImageView
+			<!-- 이동 경로(지도가 들어갈 영역) -->
+			<FrameLayout
+				android:id = "@+id/map_view_parent"
 				android:layout_width = "match_parent"
-				android:layout_height = "match_parent"
-				android:scaleType = "fitXY"
-				android:src = "@drawable/sample_map_route"/>
+				android:layout_height = "match_parent">
+
+				<!--
+				<ImageView
+					android:layout_width = "match_parent"
+					android:layout_height = "match_parent"
+					android:scaleType = "fitXY"
+					android:src = "@drawable/sample_map_route"/>
+				-->
+			</FrameLayout>
+
 
 			<!-- 속도, 칼로리 표시 영역 -->
 			<LinearLayout
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:layout_alignParentRight = "true"
+				android:background = "#A0FFFFFF"
 				android:orientation = "vertical"
-				android:padding = "10dp"
-				android:background = "#A0FFFFFF"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
+				android:padding = "10dp"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
 
 				<TextView
 					android:id = "@+id/txt_elasped"

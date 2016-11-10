@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.ActivityRecordViewerBinding;
+import util.DaumMapView;
 
 /**
  * 기록을 지도 위에 보여주는 액티비티
@@ -29,6 +30,9 @@ public class RecordViewerActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		// 화면에 맵뷰를 추가한다.
+		DaumMapView.changeParent(this, binding.mapViewParent);
 
 		// 인텐트에서 전달받은 데이터를 꺼내고 뷰에 적용한다.
 		Intent intent = getIntent();

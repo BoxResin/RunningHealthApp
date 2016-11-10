@@ -24,6 +24,7 @@ import android.widget.Toast;
 import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
+import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
 import data.Record;
@@ -45,11 +46,27 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 	private Location lastLocation; // 마지막 위치
 
+	private MapView lastMapView; // 마지막으로 사용된 맵뷰
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+	}
+
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+
+		// 맵뷰가 삭제되었는지 확인한다.
+		if (lastMapView != DaumMapView.get(getContext()))
+		{
+			// 맵뷰가 삭제되었으면 새로 만들어 화면에 추가한다.
+			lastMapView = DaumMapView.get(getContext());
+			DaumMapView.changeParent(getContext(), binding.mapViewParent);
+		}
 	}
 
 	@Nullable
@@ -59,6 +76,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
 
 		// 화면에 맵뷰를 추가한다.
+		lastMapView = DaumMapView.get(getContext());
 		DaumMapView.changeParent(getContext(), binding.mapViewParent);
 
 		// 버튼을 초기화한다.
