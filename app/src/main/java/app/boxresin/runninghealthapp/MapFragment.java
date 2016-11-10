@@ -196,6 +196,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 					LinearLayout.LayoutParams.MATCH_PARENT,
 					LinearLayout.LayoutParams.MATCH_PARENT);
+			input.setSingleLine(true);
 			input.setHint("기록 이름 입력");
 			input.setLayoutParams(layoutParams);
 
@@ -227,6 +228,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 								((MainActivity) getActivity()).showRecordFragment();
 							}
 						})
+						.setCancelable(false)
 						.setNegativeButton("취소", null)
 						.show();
 				break;
@@ -268,6 +270,10 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 현재 위치 추적 켜기
 			else
 			{
+				// 마지막 위치가 있으면 그 위치로 이동한다.
+				if (lastLocation != null)
+					lastMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()), true);
+
 				bChase = true;
 				binding.btnLocationChase.setImageDrawable(getResources().getDrawable(R.drawable.action_my_location_white));
 				binding.btnLocationChase.setBackgroundResource(R.drawable.btn_square_theme_flat_normal);
