@@ -74,12 +74,19 @@ public class RecordViewerActivity extends AppCompatActivity
 
 		MapPOIItem startPoint = new MapPOIItem();
 		startPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(37.494514, 126.959816));
+		startPoint.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+		startPoint.setCustomImageResourceId(R.drawable.custom_poi_marker_start);
+		startPoint.setCustomImageAutoscale(false);
+		startPoint.setCustomImageAnchor(0.5f, 1.0f);
 		startPoint.setItemName("출발점");
 		DaumMapView.get(this).addPOIItem(startPoint);
 
-
 		MapPOIItem endPoint = new MapPOIItem();
 		endPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(37.497719, 126.956164));
+		endPoint.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+		endPoint.setCustomImageResourceId(R.drawable.custom_poi_marker_end);
+		endPoint.setCustomImageAutoscale(false);
+		endPoint.setCustomImageAnchor(0.5f, 1.0f);
 		endPoint.setItemName("도착점");
 		DaumMapView.get(this).addPOIItem(endPoint);
 
