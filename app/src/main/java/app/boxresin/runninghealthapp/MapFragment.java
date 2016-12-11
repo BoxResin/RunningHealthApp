@@ -379,20 +379,14 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 					@Override
 					public void onBitmapCaptured(Bitmap bitmap)
 					{
-//						ItemBalloonBinding binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.item_balloon, null, false);
-//      				binding.img.setImageBitmap(viewToBitmap(((MainActivity) getActivity()).getCameraView()));
 
 						MapPOIItem marker = new MapPOIItem();
 						marker.setItemName("사진");
 						marker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-//		        		marker.setCustomCalloutBalloonBitmap(((BitmapDrawable) getResources().getDrawable(R.drawable.icon)).getBitmap());
-//						Bitmap bitmap = viewToBitmap(((MainActivity) getActivity()).getCameraView());
-//						binding.btnTakePhoto.setImageBitmap(bitmap); // TODO 삭제할 것
 						marker.setCustomCalloutBalloonBitmap(bitmap);
 						marker.setCustomImageResourceId(R.drawable.custom_marker_red);
 						marker.setCustomImageAutoscale(false);
 						marker.setCustomImageAnchor(0.5f, 1.0f);
-//			        	marker.setCustomPressedCalloutBalloon(binding.getRoot());
 						marker.setMapPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()));
 						DaumMapView.get(getContext()).addPOIItem(marker);
 					}
@@ -408,6 +402,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		lastLocation = location;
 
 		traceLine.addPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()));
+		DaumMapView.get(getContext()).removePolyline(traceLine);
+		DaumMapView.get(getContext()).addPolyline(traceLine);
 
 		DaumMapView.get(getContext()).removeAllCircles();
 		DaumMapView.get(getContext()).addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
