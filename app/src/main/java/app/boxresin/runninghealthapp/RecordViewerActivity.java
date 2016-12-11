@@ -19,6 +19,7 @@ import net.daum.mf.map.api.MapPolyline;
 import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.ActivityRecordViewerBinding;
+import data.Record;
 import global.DaumMapView;
 import global.Settings;
 import util.LocationConverter;
@@ -30,12 +31,15 @@ public class RecordViewerActivity extends AppCompatActivity
 {
 	private ActivityRecordViewerBinding binding;
 	private MapPolyline poly;
+	private Record record;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_record_viewer);
+
+		record = Settings.get().currentRecord;
 
 		// 툴바를 초기화한다.
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,33 +52,12 @@ public class RecordViewerActivity extends AppCompatActivity
 		// 더미 위치 데이터 넣기 NOTE 나중에 지울 것
 		poly = new MapPolyline();
 		poly.setLineColor(Color.argb(128, 255, 51, 0));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.494514, 126.959816));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.494642, 126.960012));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.494770, 126.960012));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.494832, 126.959569));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.494904, 126.958920));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.495028, 126.958843));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.495343, 126.958882));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.495482, 126.958926));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.495699, 126.958887));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.495771, 126.958694));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.495879, 126.958178));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.496071, 126.957836));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.496118, 126.957396));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.496188, 126.957387));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.496418, 126.957323));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.496541, 126.957039));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.496822, 126.957200));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.497218, 126.957248));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.497444, 126.957210));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.497625, 126.957017));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.497665, 126.956797));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.497693, 126.956521));
-		poly.addPoint(MapPoint.mapPointWithGeoCoord(37.497719, 126.956164));
+		for (int i = 0; i < record.getPointCount(); i++)
+			poly.addPoint(MapPoint.mapPointWithGeoCoord(record.getLatitudes().get(i), record.getLongitudes().get(i)));
 		DaumMapView.get(this).addPolyline(poly);
 
 		MapPOIItem startPoint = new MapPOIItem();
-		startPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(37.494514, 126.959816));
+		startPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(record.getLatitudes().get(0), record.getLongitudes().get(0)));
 		startPoint.setMarkerType(MapPOIItem.MarkerType.CustomImage);
 		startPoint.setCustomImageResourceId(R.drawable.custom_poi_marker_start);
 		startPoint.setCustomImageAutoscale(false);
@@ -83,7 +66,8 @@ public class RecordViewerActivity extends AppCompatActivity
 		DaumMapView.get(this).addPOIItem(startPoint);
 
 		MapPOIItem endPoint = new MapPOIItem();
-		endPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(37.497719, 126.956164));
+		endPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(record.getLatitudes().get(record.getPointCount() - 1),
+				record.getLongitudes().get(record.getPointCount() - 1)));
 		endPoint.setMarkerType(MapPOIItem.MarkerType.CustomImage);
 		endPoint.setCustomImageResourceId(R.drawable.custom_poi_marker_end);
 		endPoint.setCustomImageAutoscale(false);
@@ -94,11 +78,11 @@ public class RecordViewerActivity extends AppCompatActivity
 		// 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
 		DaumMapView.get(this).moveCamera(CameraUpdateFactory.newMapPointBounds(new MapPointBounds(poly.getMapPoints()), 100));
 
-		binding.txtElasped.setText(String.format(Locale.KOREAN, "%.1f분 동안", Settings.get().currentRecord.getElapsed()));
-		binding.txtMoved.setText(String.format(Locale.KOREAN, "총 %.2f ㎞ 이동", Settings.get().currentRecord.getMoved()));
-		binding.txtConsumed.setText(String.format(Locale.KOREAN, "총 %.2f ㎉ 소모", Settings.get().currentRecord.getConsumed()));
-		binding.txtFastest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", Settings.get().currentRecord.getFastest()));
-		binding.txtSlowest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", Settings.get().currentRecord.getSlowest()));
+		binding.txtElasped.setText(String.format(Locale.KOREAN, "%.1f분 동안", record.getElapsed()));
+		binding.txtMoved.setText(String.format(Locale.KOREAN, "총 %.2f ㎞ 이동", record.getMoved()));
+		binding.txtConsumed.setText(String.format(Locale.KOREAN, "총 %.2f ㎉ 소모", record.getConsumed()));
+		binding.txtFastest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", record.getFastest()));
+		binding.txtSlowest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", record.getSlowest()));
 	}
 
 	@Override

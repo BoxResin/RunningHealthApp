@@ -164,4 +164,19 @@ public class Record
 	{
 		return slowestKmh;
 	}
+
+	public ArrayList<Double> getLatitudes()
+	{
+		return latitudes;
+	}
+
+	public ArrayList<Double> getLongitudes()
+	{
+		return longitudes;
+	}
+
+	public int getPointCount()
+	{
+		return times.size();
+	}
 }
