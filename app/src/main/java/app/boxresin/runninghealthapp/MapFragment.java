@@ -33,6 +33,7 @@ import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
+import data.Pref;
 import data.Record;
 import global.DaumMapView;
 import global.Settings;
@@ -164,7 +165,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		if (!hidden)
 		{
 			// 환경설정대로 지도 표시 형태를 갱신한다.
-			DaumMapView.get(getContext()).setMapType(Settings.get().getMapType());
+			DaumMapView.get(getContext()).setMapType(Pref.mapType);
 
 			// 카메라를 띄울지 말지 결정한다.
 			((MainActivity) getActivity()).showCamera(bCamera);
@@ -180,7 +181,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		super.onResume();
 
 		// 환경설정대로 지도 표시 형태를 갱신한다.
-		DaumMapView.get(getContext()).setMapType(Settings.get().getMapType());
+		DaumMapView.get(getContext()).setMapType(Pref.mapType);
 	}
 
 	/**

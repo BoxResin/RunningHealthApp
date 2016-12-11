@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
+import data.Pref;
+
 /**
  * 다음 맵 뷰가 하나만 생성되도록 하기 위한 싱글톤
  *
@@ -36,7 +38,7 @@ public class DaumMapView
 		origin = new MapView(context);
 		origin.setDaumMapApiKey("d7430f85cbcf60aced1e2c584ae6361f"); // 다음 API 키 적용
 		origin.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.494632, 126.959854), -2, true); // 정보대 위치로 이동
-		origin.setMapType(Settings.get().getMapType()); // 지도 표시 형식(약도, 위성 사진 등)은 설정값대로
+		origin.setMapType(Pref.mapType); // 지도 표시 형식(약도, 위성 사진 등)은 설정값대로
 	}
 
 	/**

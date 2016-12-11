@@ -2,8 +2,6 @@ package global;
 
 import android.widget.ArrayAdapter;
 
-import net.daum.mf.map.api.MapView;
-
 import data.Record;
 
 /**
@@ -22,18 +20,7 @@ public class Settings
 	{
 	}
 
-	private MapView.MapType mapType = MapView.MapType.Standard;
 	private ArrayAdapter<Record> recordAdapter;
-
-	public MapView.MapType getMapType()
-	{
-		return mapType;
-	}
-
-	public void setMapType(MapView.MapType mapType)
-	{
-		this.mapType = mapType;
-	}
 
 	public ArrayAdapter<Record> getRecordAdapter()
 	{

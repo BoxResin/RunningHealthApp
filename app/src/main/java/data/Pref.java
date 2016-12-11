@@ -3,6 +3,8 @@ package data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import net.daum.mf.map.api.MapView;
+
 /**
  * 환경설정을 관리하는 클래스
  */
@@ -12,6 +14,7 @@ public class Pref
 	public static String gender;
 	public static int height;
 	public static int weight;
+	public static MapView.MapType mapType;
 
 	public static void load(Context context)
 	{
@@ -20,6 +23,14 @@ public class Pref
 		gender = prefs.getString("gender", "");
 		height = prefs.getInt("height", 0);
 		weight = prefs.getInt("weight", 0);
+
+		String mapType_str = prefs.getString("mapType", "Standard");
+		if (mapType_str.equals("Standard"))
+			mapType = MapView.MapType.Standard;
+		else if (mapType_str.equals("Satellite"))
+			mapType = MapView.MapType.Satellite;
+		else if (mapType_str.equals("Hybrid"))
+			mapType = MapView.MapType.Hybrid;
 	}
 
 	public static void save(Context context)
@@ -30,6 +41,13 @@ public class Pref
 		editor.putString("gender", gender);
 		editor.putInt("height", height);
 		editor.putInt("weight", weight);
+
+		if (mapType == MapView.MapType.Standard)
+			editor.putString("mapType", "Standard");
+		else if (mapType == MapView.MapType.Satellite)
+			editor.putString("mapType", "Satellite");
+		else if (mapType == MapView.MapType.Hybrid)
+			editor.putString("mapType", "Hybrid");
 		editor.apply();
 	}
 }

@@ -8,10 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 
-import net.daum.mf.map.api.MapView;
-
 import app.boxresin.runninghealthapp.databinding.ActivitySettingBinding;
-import global.Settings;
+import data.Pref;
+
+import static net.daum.mf.map.api.MapView.MapType.Hybrid;
+import static net.daum.mf.map.api.MapView.MapType.Satellite;
+import static net.daum.mf.map.api.MapView.MapType.Standard;
 
 /**
  * 설정 액티비티
@@ -33,7 +35,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// 환경설정 대로 초기값을 설정한다.
-		switch (Settings.get().getMapType())
+		switch (Pref.mapType)
 		{
 		case Standard:
 			binding.btnStandardMap.setChecked(true);
@@ -64,15 +66,15 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 			switch (checkedId)
 			{
 			case R.id.btn_standard_map: // 약도 형식 맵
-				Settings.get().setMapType(MapView.MapType.Standard);
+				Pref.mapType = Standard;
 				break;
 
 			case R.id.btn_satellite_map: // 위성 형식 맵
-				Settings.get().setMapType(MapView.MapType.Satellite);
+				Pref.mapType = Satellite;
 				break;
 
 			case R.id.btn_hybrid_map: // 혼항형 맵
-				Settings.get().setMapType(MapView.MapType.Hybrid);
+				Pref.mapType = Hybrid;
 				break;
 			}
 		}
