@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
+import data.Pref;
 import util.LocationConverter;
 import view.CameraSurface;
 
@@ -143,6 +144,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+
+		// 환경설정을 저장한다.
+		Pref.save(this);
 	}
 
 	/**
