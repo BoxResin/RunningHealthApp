@@ -30,17 +30,16 @@ public class Record
 	{
 	}
 
-	public Record(String name, double moved, double consumed, double elapsed)
+	public Record(UUID id, String name, String date, double moved, double consumed, double elapsed, double fastest, double slowest)
 	{
-		this.elapsed = elapsed;
-		Calendar today = Calendar.getInstance();
-
+		this.id = id;
 		this.name = name;
-		this.date = String.format(Locale.KOREAN, "%04d-%02d-%02d  %d시 %d분",
-				today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DAY_OF_MONTH),
-				today.get(Calendar.HOUR_OF_DAY), today.get(Calendar.MINUTE));
+		this.date = date;
 		this.moved = moved;
 		this.consumed = consumed;
+		this.elapsed = elapsed;
+		this.fastestKmh = fastest;
+		this.slowestKmh = slowest;
 	}
 
 	public void save(String recordName)
@@ -53,6 +52,8 @@ public class Record
 		date = String.format(Locale.KOREAN, "%04d-%02d-%02d  %d시 %d분",
 				today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DAY_OF_MONTH),
 				today.get(Calendar.HOUR_OF_DAY), today.get(Calendar.MINUTE));
+
+		RecordDatabase.get().save(this);
 	}
 
 	public void addPoint(MapPoint point)
@@ -91,6 +92,13 @@ public class Record
 			double speed = moved / (elapsed / 60);
 			consumed = speed * (22.49 + 2.5 * (Pref.weight - 45) / 5) * 2 * (elapsed / 60);
 		}
+	}
+
+	public void addPoint(MapPoint point, long time)
+	{
+		latitudes.add(point.getMapPointGeoCoord().latitude);
+		longitudes.add(point.getMapPointGeoCoord().longitude);
+		times.add(time);
 	}
 
 	/**
@@ -175,8 +183,18 @@ public class Record
 		return longitudes;
 	}
 
+	public ArrayList<Long> getTimes()
+	{
+		return times;
+	}
+
 	public int getPointCount()
 	{
 		return times.size();
+	}
+
+	public String getId()
+	{
+		return id.toString();
 	}
 }
