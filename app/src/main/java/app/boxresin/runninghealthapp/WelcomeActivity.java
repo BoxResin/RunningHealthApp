@@ -4,13 +4,15 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import app.boxresin.runninghealthapp.databinding.ActivityWelcomeBinding;
+import app.boxresin.runninghealthapp.databinding.Welcome3Binding;
 import data.Pref;
 
 public class WelcomeActivity extends AppCompatActivity
@@ -63,7 +65,27 @@ public class WelcomeActivity extends AppCompatActivity
 					break;
 
 				case 2:
-					root = inflater.inflate(R.layout.welcome_3, null);
+					final Welcome3Binding inputBinding = DataBindingUtil.inflate(inflater, R.layout.welcome_3, null, false);
+					inputBinding.genderChoice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+					{
+						@Override
+						public void onCheckedChanged(RadioGroup group, int checkedId)
+						{
+							checkInput(inputBinding);
+						}
+					});
+					View.OnKeyListener onKeyListener = new View.OnKeyListener()
+					{
+						@Override
+						public boolean onKey(View v, int keyCode, KeyEvent event)
+						{
+							checkInput(inputBinding);
+							return false;
+						}
+					};
+					inputBinding.editHeight.setOnKeyListener(onKeyListener);
+					inputBinding.editWeight.setOnKeyListener(onKeyListener);
+					root = inputBinding.getRoot();
 					break;
 				}
 				container.addView(root);
@@ -77,22 +99,26 @@ public class WelcomeActivity extends AppCompatActivity
 			}
 		});
 
-		// 마지막 페이지에 도달하면 시작하기 버튼을 나타낸다.
-		binding.viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
-		{
-			@Override
-			public void onPageSelected(int position)
-			{
-				// TODO 사용자가 모든 내용을 입력하면 시작하기 버튼이 나타나도록 한다.
-				if (position == 2)
-					binding.btnStart.setVisibility(View.VISIBLE);
-				else
-					binding.btnStart.setVisibility(View.GONE);
-			}
-		});
 		binding.pagerIndicator.setFillColor(0XFF00B29C);
 		binding.pagerIndicator.setStrokeColor(0XFF00B29C);
 		binding.pagerIndicator.setViewPager(binding.viewPager);
+	}
+
+	/**
+	 * 사용자가 다음 단계로 진행하기 위한 정보를 모두 입력했는지 확인하는 메서드
+	 * 모든 정보를 입력했으면 시작하기 버튼을 나타내고, 그렇지 않으면 나타내지 않는다.
+	 */
+	private void checkInput(Welcome3Binding inputBinding)
+	{
+		// 모든 정보가 입력됐으면
+		if (inputBinding.genderChoice.getCheckedRadioButtonId() != -1 &&
+				!inputBinding.editHeight.getText().toString().equals("") &&
+				!inputBinding.editWeight.getText().toString().equals(""))
+		{
+			binding.btnStart.setVisibility(View.VISIBLE);
+		}
+		else
+			binding.btnStart.setVisibility(View.GONE);
 	}
 
 	public void onClick(View view)

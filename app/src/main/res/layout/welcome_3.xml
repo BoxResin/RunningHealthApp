@@ -1,98 +1,104 @@
 <!-- 앱 소개 화면 3 (필요한 정보 입력하는 부분) -->
-<LinearLayout
+<layout
 	xmlns:android = "http://schemas.android.com/apk/res/android"
-	xmlns:tools = "http://schemas.android.com/tools"
-	android:layout_width = "match_parent"
-	android:layout_height = "match_parent"
-	android:gravity = "center"
-	android:orientation = "vertical">
+	xmlns:tools = "http://schemas.android.com/tools">
 
-	<TextView
-		android:layout_width = "match_parent"
-		android:layout_height = "wrap_content"
-		android:layout_marginBottom = "5dp"
-		android:gravity = "center"
-		android:text = "신체 정보 입력"
-		android:textColor = "@color/colorPrimary"
-		android:textSize = "20sp"
-		android:textStyle = "bold"/>
-
-	<TextView
-		android:layout_width = "match_parent"
-		android:layout_height = "wrap_content"
-		android:layout_marginBottom = "70dp"
-		android:gravity = "center"
-		android:text = "정확한 칼로리 소모량 계산을 위해 필요합니다!"/>
-
-	<!-- 성별 선택 부분 -->
-	<RadioGroup
-		android:layout_width = "match_parent"
-		android:layout_height = "wrap_content"
-		android:gravity = "center"
-		android:orientation = "horizontal">
-
-		<RadioButton
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
-			android:layout_marginRight = "30dp"
-			android:text = "남자"/>
-
-		<RadioButton
-			android:layout_width = "wrap_content"
-			android:layout_height = "wrap_content"
-			android:text = "여자"/>
-	</RadioGroup>
-
-	<!-- 키·체중 입력 부분 -->
 	<LinearLayout
-		android:layout_width = "250dp"
-		android:layout_height = "wrap_content"
-		android:layout_margin = "20dp"
-		android:orientation = "vertical"
-		tools:background = "#FFFF00">
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent"
+		android:gravity = "center"
+		android:orientation = "vertical">
 
-		<LinearLayout
+		<TextView
 			android:layout_width = "match_parent"
 			android:layout_height = "wrap_content"
-			android:layout_margin = "5dp">
+			android:layout_marginBottom = "5dp"
+			android:gravity = "center"
+			android:text = "신체 정보 입력"
+			android:textColor = "@color/colorPrimary"
+			android:textSize = "20sp"
+			android:textStyle = "bold"/>
 
-			<EditText
-				android:layout_width = "0dp"
-				android:layout_height = "wrap_content"
-				android:layout_weight = "1"
-				android:gravity = "right"
-				android:hint = "키"
-				android:inputType = "number"
-				android:maxLines = "1"/>
-
-			<TextView
-				android:layout_width = "wrap_content"
-				android:layout_height = "wrap_content"
-				android:layout_weight = "0"
-				android:text = "(㎝)"
-				android:textSize = "15sp"/>
-		</LinearLayout>
-
-		<LinearLayout
+		<TextView
 			android:layout_width = "match_parent"
 			android:layout_height = "wrap_content"
-			android:layout_margin = "5dp">
+			android:layout_marginBottom = "70dp"
+			android:gravity = "center"
+			android:text = "정확한 칼로리 소모량 계산을 위해 필요합니다!"/>
 
-			<EditText
-				android:layout_width = "0dp"
-				android:layout_height = "wrap_content"
-				android:layout_weight = "1"
-				android:gravity = "right"
-				android:hint = "체중"
-				android:inputType = "number"
-				android:maxLines = "1"/>
+		<!-- 성별 선택 부분 -->
+		<RadioGroup
+			android:id = "@+id/gender_choice"
+			android:layout_width = "match_parent"
+			android:layout_height = "wrap_content"
+			android:gravity = "center"
+			android:orientation = "horizontal">
 
-			<TextView
+			<RadioButton
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
-				android:layout_weight = "0"
-				android:text = "(㎏)"
-				android:textSize = "15sp"/>
+				android:layout_marginRight = "30dp"
+				android:text = "남자"/>
+
+			<RadioButton
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:text = "여자"/>
+		</RadioGroup>
+
+		<!-- 키·체중 입력 부분 -->
+		<LinearLayout
+			android:layout_width = "250dp"
+			android:layout_height = "wrap_content"
+			android:layout_margin = "20dp"
+			android:orientation = "vertical"
+			tools:background = "#FFFF00">
+
+			<LinearLayout
+				android:layout_width = "match_parent"
+				android:layout_height = "wrap_content"
+				android:layout_margin = "5dp">
+
+				<EditText
+					android:id = "@+id/edit_height"
+					android:layout_width = "0dp"
+					android:layout_height = "wrap_content"
+					android:layout_weight = "1"
+					android:gravity = "right"
+					android:hint = "키"
+					android:inputType = "number"
+					android:maxLines = "1"/>
+
+				<TextView
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:layout_weight = "0"
+					android:text = "(㎝)"
+					android:textSize = "15sp"/>
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_width = "match_parent"
+				android:layout_height = "wrap_content"
+				android:layout_margin = "5dp">
+
+				<EditText
+					android:id = "@+id/edit_weight"
+					android:layout_width = "0dp"
+					android:layout_height = "wrap_content"
+					android:layout_weight = "1"
+					android:gravity = "right"
+					android:hint = "체중"
+					android:inputType = "number"
+					android:maxLines = "1"/>
+
+				<TextView
+					android:layout_width = "wrap_content"
+					android:layout_height = "wrap_content"
+					android:layout_weight = "0"
+					android:text = "(㎏)"
+					android:textSize = "15sp"/>
+			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
-</LinearLayout>
+</layout>
