@@ -280,6 +280,16 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			}
 		}
 
+		// 기록 초기화 메뉴
+		else if (item.getItemId() == R.id.action_clear_record)
+		{
+			DaumMapView.get(getContext()).removeAllPolylines();
+			DaumMapView.get(getContext()).removeAllCircles();
+			lastLocation = null;
+			traceLine = new MapPolyline();
+			loadedLine = new MapPolyline();
+		}
+
 		// 불러온 이동궤적 삭제 메뉴
 		else if (item.getItemId() == R.id.action_remove_loadrd_lines)
 		{
