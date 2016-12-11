@@ -18,6 +18,8 @@ import data.Pref;
 public class WelcomeActivity extends AppCompatActivity
 {
 	private ActivityWelcomeBinding binding;
+	private String gender;
+	private int height, weight;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -115,6 +117,13 @@ public class WelcomeActivity extends AppCompatActivity
 				!inputBinding.editHeight.getText().toString().equals("") &&
 				!inputBinding.editWeight.getText().toString().equals(""))
 		{
+			if (inputBinding.genderChoice.getCheckedRadioButtonId() == R.id.btn_man)
+				gender = "man";
+			else
+				gender = "woman";
+			height = Integer.parseInt(inputBinding.editHeight.getText().toString());
+			weight = Integer.parseInt(inputBinding.editWeight.getText().toString());
+
 			binding.btnStart.setVisibility(View.VISIBLE);
 		}
 		else
@@ -125,7 +134,12 @@ public class WelcomeActivity extends AppCompatActivity
 	{
 		switch (view.getId())
 		{
-		case R.id.btn_start:
+		case R.id.btn_start: // 시작하기 버튼
+			// 사용자가 입력한 정보를 저장한다.
+			Pref.gender = gender;
+			Pref.height = height;
+			Pref.weight = weight;
+
 			// 메인 액티비티로 이동한다.
 			startActivity(new Intent(this, MainActivity.class));
 			finish();
