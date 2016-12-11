@@ -13,7 +13,7 @@ public class Pref
 	public static void load(Context context)
 	{
 		SharedPreferences prefs = context.getSharedPreferences("Pref", Context.MODE_PRIVATE);
-		isFirst = prefs.getBoolean("isFirst", false);
+		isFirst = prefs.getBoolean("isFirst", true);
 	}
 
 	public static void save(Context context)

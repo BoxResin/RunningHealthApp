@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import app.boxresin.runninghealthapp.databinding.ActivityWelcomeBinding;
+import data.Pref;
 
 public class WelcomeActivity extends AppCompatActivity
 {
@@ -20,6 +21,14 @@ public class WelcomeActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		// 처음 실행이 아니면 이 액티비티를 건너뛴다.
+		if (!Pref.isFirst)
+		{
+			startActivity(new Intent(this, MainActivity.class));
+			finish();
+			return;
+		}
 
 		// 뷰 페이저와 인디케이터를 초기화한다.
 		binding = DataBindingUtil.setContentView(this, R.layout.activity_welcome);
@@ -94,6 +103,7 @@ public class WelcomeActivity extends AppCompatActivity
 			// 메인 액티비티로 이동한다.
 			startActivity(new Intent(this, MainActivity.class));
 			finish();
+			Pref.isFirst = false;
 			break;
 		}
 	}
