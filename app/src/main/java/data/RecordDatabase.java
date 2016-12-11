@@ -23,14 +23,14 @@ public class RecordDatabase
 	{
 		SQLiteDatabase db = helper.getWritableDatabase();
 
-		db.execSQL(String.format("INSERT INTO Record (id, name, date, moved, consumed, elapsed, fastest, slowest) VALUES (%s, %s, %s, %f, %f, %f, %f, %f);",
+		db.execSQL(String.format("INSERT INTO Record (id, name, date, moved, consumed, elapsed, fastest, slowest) VALUES ('%s', '%s', '%s', %f, %f, %f, %f, %f);",
 				record.getId(), record.getName(), record.getDate(), record.getMoved(), record.getConsumed(),
 				record.getElapsed(), record.getFastest(), record.getSlowest()));
 
 		for (int i = 0; i < record.getPointCount(); i++)
 		{
-			db.execSQL(String.format("INSRT INTO RecordPoint (id, latitude, longitude, time) VALUES (" +
-					"%s, %f, %f, %d);", record.getId(), record.getLatitudes().get(i), record.getLongitudes().get(i), record.getTimes().get(i)));
+			db.execSQL(String.format("INSERT INTO RecordPoint (id, latitude, longitude, time) VALUES (" +
+					"'%s', %f, %f, %d);", record.getId(), record.getLatitudes().get(i), record.getLongitudes().get(i), record.getTimes().get(i)));
 		}
 
 		db.close();
@@ -71,7 +71,7 @@ public class RecordDatabase
 
 		cursor.close();
 		db.close();
-		return (Record[]) records.toArray();
+		return records.toArray(new Record[]{});
 	}
 
 	private static class DBHelper extends SQLiteOpenHelper
@@ -91,6 +91,7 @@ public class RecordDatabase
 			db.execSQL("CREATE TABLE RecordPoint (_index INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT NOT NULL, " +
 					"latitude REAL, longitude REAL, time INTEGER);");
 		}
+
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{

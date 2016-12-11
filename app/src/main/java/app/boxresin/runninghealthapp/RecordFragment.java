@@ -60,6 +60,7 @@ public class RecordFragment extends Fragment implements AdapterView.OnItemClickL
 				return convertView;
 			}
 		};
+		adapter.addAll(Record.readAll());
 		binding.listRecord.setAdapter(adapter);
 		binding.listRecord.setOnItemClickListener(this);
 		Settings.get().setRecordAdapter(adapter);

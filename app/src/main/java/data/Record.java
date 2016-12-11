@@ -197,4 +197,9 @@ public class Record
 	{
 		return id.toString();
 	}
+
+	public static Record[] readAll()
+	{
+		return RecordDatabase.get().readAll();
+	}
 }
