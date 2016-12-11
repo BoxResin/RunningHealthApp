@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -31,6 +29,8 @@ import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
+
+import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
 import data.Pref;
@@ -50,6 +50,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	private boolean bChase; // 현재 위치 추적 여부
 	private boolean bCamera; // 카메라 띄우기 여부
 	private boolean isPaused; // 프래그먼트가 현재 onPause된 상태인지
+
+	private Record record = new Record();;
 
 	private MapView lastMapView; // 마지막으로 사용된 맵뷰
 
@@ -208,6 +210,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 위치 기록을 시작해야 할 때
 			if (!bStarted)
 			{
+				// 현재 속도, 소모 칼로리 패널을 나타낸다.
+				binding.panelSpeedKcal.setVisibility(View.VISIBLE);
+
 				// 네트워크 위치제공자가 사용가능한지 확인한다.
 				if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 				{
@@ -226,6 +231,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 위치 기록을 멈춰야 할 때
 			else
 			{
+				// 현재 속도, 소모 칼로리 패널을 숨긴다.
+				binding.panelSpeedKcal.setVisibility(View.GONE);
+
 				// 위치 기록을 중단한다.
 				//noinspection ResourceType
 				locationManager.removeUpdates(this);
@@ -259,11 +267,13 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 							public void onClick(DialogInterface dialog, int which)
 							{
 								// 여기서 실제로 기록을 저장한다.
-								Settings.get().getRecordAdapter().add(
-										new Record(input.getText().toString(), 0, 0, 0));
+								record.save(input.getText().toString());
+
+								Settings.get().getRecordAdapter().add(record);
 								Settings.get().getRecordAdapter().notifyDataSetChanged();
 
 								// 화면의 이동궤적을 지운다.
+								record = new Record();
 								DaumMapView.get(getContext()).removeAllPolylines();
 								DaumMapView.get(getContext()).removeAllCircles();
 								lastLocation = null;
@@ -284,6 +294,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		// 기록 초기화 메뉴
 		else if (item.getItemId() == R.id.action_clear_record)
 		{
+			record.discard();
+			record = new Record();
 			DaumMapView.get(getContext()).removeAllPolylines();
 			DaumMapView.get(getContext()).removeAllCircles();
 			lastLocation = null;
@@ -412,16 +424,21 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	{
 		lastLocation = location;
 
-		traceLine.addPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()));
+		MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude());
+		traceLine.addPoint(mapPoint);
 		DaumMapView.get(getContext()).removePolyline(traceLine);
 		DaumMapView.get(getContext()).addPolyline(traceLine);
 
 		DaumMapView.get(getContext()).removeAllCircles();
-		DaumMapView.get(getContext()).addCircle(new MapCircle(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), 2, 0xFFFF0000, 0xFFFF8000));
+		DaumMapView.get(getContext()).addCircle(new MapCircle(mapPoint, 2, 0xFFFF0000, 0xFFFF8000));
+
+		record.addPoint(mapPoint);
+		binding.txtSpeed.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", record.getCurrentSpeed()));
+		binding.txtKcal.setText(String.format(Locale.KOREAN, "%.2f ㎉", record.getConsumed()));
 
 		// 현재 위치 추적 상태일 때만 지도를 현재 위치로 이동시킨다.
 		if (bChase)
-			DaumMapView.get(getContext()).setMapCenterPoint(MapPoint.mapPointWithGeoCoord(location.getLatitude(), location.getLongitude()), true);
+			DaumMapView.get(getContext()).setMapCenterPoint(mapPoint, true);
 	}
 
 	@Override
@@ -452,18 +469,5 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
 		DaumMapView.get(getContext()).addPolyline(loadedLine);
 		DaumMapView.get(getContext()).addPolyline(traceLine);
-	}
-
-	/**
-	 * 뷰에 그려진 그림을 Bitmap으로 가져오는 메서드
-	 */
-	private static Bitmap viewToBitmap(SurfaceView view)
-	{
-		Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		view.setZOrderOnTop(true);
-		view.draw(canvas);
-		view.setZOrderOnTop(false);
-		return bitmap;
 	}
 }

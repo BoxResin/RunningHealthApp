@@ -64,11 +64,6 @@ public class RecordFragment extends Fragment implements AdapterView.OnItemClickL
 		binding.listRecord.setOnItemClickListener(this);
 		Settings.get().setRecordAdapter(adapter);
 
-		// NOTE 더미 데이터 추가. 나중에 지울 것
-		adapter.add(new Record("한강 산책", 1.625, 310, 12.6));
-		adapter.add(new Record("여의도 탐험", 3.25, 598.2, 28.1));
-		adapter.add(new Record("숭실대 횡단", 0.43, 94.7, 7.3));
-
 		return binding.getRoot();
 	}
 
@@ -82,12 +77,8 @@ public class RecordFragment extends Fragment implements AdapterView.OnItemClickL
 		Record record = adapter.getItem(position);
 		if (record != null)
 		{
-			Intent intent = new Intent(getActivity(), RecordViewerActivity.class);
-			intent.putExtra("record_name", record.getName());
-			intent.putExtra("elapsed", record.getElapsed());
-			intent.putExtra("moved", record.getMoved());
-			intent.putExtra("consumed", record.getConsumed());
-			startActivity(intent);
+			Settings.get().currentRecord = record;
+			startActivity(new Intent(getActivity(), RecordViewerActivity.class));
 		}
 	}
 }

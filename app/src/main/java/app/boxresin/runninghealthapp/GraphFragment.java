@@ -88,8 +88,11 @@ public class GraphFragment extends Fragment
 			dataConsumed.add((int) record.getConsumed());
 		}
 
-		lineView.setBottomTextList(bottomCaptions);
-		lineView.setDataList(allData);
+		if (bottomCaptions.size() > 0)
+		{
+			lineView.setBottomTextList(bottomCaptions);
+			lineView.setDataList(allData);
+		}
 	}
 
 	@Override

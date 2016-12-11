@@ -21,6 +21,7 @@ public class Settings
 	}
 
 	private ArrayAdapter<Record> recordAdapter;
+	public Record currentRecord;
 
 	public ArrayAdapter<Record> getRecordAdapter()
 	{

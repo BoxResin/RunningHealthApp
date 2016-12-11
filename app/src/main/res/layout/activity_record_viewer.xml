@@ -79,15 +79,17 @@
 					android:text = "순간 최고"/>
 
 				<TextView
+					android:id = "@+id/txt_fastest"
 					android:layout_gravity = "right"
-					android:text = "12.7 ㎞/h"/>
+					tools:text = "12.7 ㎞/h"/>
 
 				<TextView
 					android:text = "순간 최저"/>
 
 				<TextView
+					android:id = "@+id/txt_slowest"
 					android:layout_gravity = "right"
-					android:text = "2.4 ㎞/h"/>
+					tools:text = "2.4 ㎞/h"/>
 			</GridLayout>
 		</RelativeLayout>
 	</LinearLayout>

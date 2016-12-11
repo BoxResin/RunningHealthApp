@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.ActivityRecordViewerBinding;
 import global.DaumMapView;
+import global.Settings;
 import util.LocationConverter;
 
 /**
@@ -93,16 +94,11 @@ public class RecordViewerActivity extends AppCompatActivity
 		// 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
 		DaumMapView.get(this).moveCamera(CameraUpdateFactory.newMapPointBounds(new MapPointBounds(poly.getMapPoints()), 100));
 
-		// 인텐트에서 전달받은 데이터를 꺼내고 뷰에 적용한다.
-		Intent intent = getIntent();
-		setTitle(intent.getStringExtra("record_name"));
-		double elasped = intent.getDoubleExtra("elapsed", 0);
-		double moved = intent.getDoubleExtra("moved", 0);
-		double consumed = intent.getDoubleExtra("consumed", 0);
-
-		binding.txtElasped.setText(String.format(Locale.KOREAN, "%.1f분 동안", elasped));
-		binding.txtMoved.setText(String.format(Locale.KOREAN, "총 %.2f ㎞ 이동", moved));
-		binding.txtConsumed.setText(String.format(Locale.KOREAN, "총 %.2f ㎉ 소모", consumed));
+		binding.txtElasped.setText(String.format(Locale.KOREAN, "%.1f분 동안", Settings.get().currentRecord.getElapsed()));
+		binding.txtMoved.setText(String.format(Locale.KOREAN, "총 %.2f ㎞ 이동", Settings.get().currentRecord.getMoved()));
+		binding.txtConsumed.setText(String.format(Locale.KOREAN, "총 %.2f ㎉ 소모", Settings.get().currentRecord.getConsumed()));
+		binding.txtFastest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", Settings.get().currentRecord.getFastest()));
+		binding.txtSlowest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", Settings.get().currentRecord.getSlowest()));
 	}
 
 	@Override

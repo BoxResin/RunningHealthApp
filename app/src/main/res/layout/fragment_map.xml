@@ -28,13 +28,17 @@
 
 		<!-- 속도, 칼로리 표시 영역 -->
 		<LinearLayout
+			android:id = "@+id/panel_speed_kcal"
 			android:layout_width = "wrap_content"
 			android:layout_height = "wrap_content"
 			android:orientation = "vertical"
 			android:padding = "10dp"
-			tools:background = "#FF0000"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
+			android:visibility = "gone"
+			tools:background = "#FF0000"
+			tools:visibility = "visible"> <!-- ※ 미리보기에서만 배경 빨갛게 보임! -->
 
 			<TextView
+				android:id = "@+id/txt_speed"
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:layout_marginBottom = "5dp"
@@ -42,21 +46,22 @@
 				android:shadowDx = "3"
 				android:shadowDy = "3"
 				android:shadowRadius = "2"
-				android:text = "5 ㎞/h"
 				android:textColor = "@android:color/white"
 				android:textSize = "25sp"
-				android:textStyle = "bold"/>
+				android:textStyle = "bold"
+				tools:text = "5 ㎞/h"/>
 
 			<TextView
+				android:id = "@+id/txt_kcal"
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
 				android:shadowColor = "@android:color/black"
 				android:shadowDx = "3"
 				android:shadowDy = "3"
 				android:shadowRadius = "2"
-				android:text = "31 ㎉"
 				android:textColor = "@color/colorPrimary"
-				android:textSize = "20sp"/>
+				android:textSize = "20sp"
+				tools:text = "31 ㎉"/>
 		</LinearLayout>
 
 		<!-- 현재 위치 추적 버튼 영역 -->
