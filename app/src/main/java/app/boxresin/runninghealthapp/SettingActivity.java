@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RadioGroup;
 
 import app.boxresin.runninghealthapp.databinding.ActivitySettingBinding;
@@ -35,6 +37,14 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// 환경설정 대로 초기값을 설정한다.
+		if (Pref.gender.equals("man"))
+			binding.btnMan.setChecked(true);
+		else if (Pref.gender.equals("woman"))
+			binding.btnWoman.setChecked(true);
+
+		binding.editHeight.setText("" + Pref.height);
+		binding.editWeight.setText("" + Pref.weight);
+
 		switch (Pref.mapType)
 		{
 		case Standard:
@@ -50,8 +60,29 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 			break;
 		}
 
-		// 지도 타입 라디오 버튼을 초기화한다.
+		// 라디오 버튼을 초기화한다.
+		binding.genderChoice.setOnCheckedChangeListener(this);
 		binding.radioMapType.setOnCheckedChangeListener(this);
+
+		// 신체정보 관련 에디트를 초기화한다.
+		binding.editHeight.setOnKeyListener(new View.OnKeyListener()
+		{
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event)
+			{
+				if (v.getId() == R.id.edit_height)
+				{
+					if (!binding.editHeight.getText().toString().equals(""))
+						Pref.height = Integer.parseInt(binding.editHeight.getText().toString());
+				}
+				else if (v.getId() == R.id.edit_weight)
+				{
+					if (!binding.editWeight.getText().toString().equals(""))
+						Pref.weight = Integer.parseInt(binding.editWeight.getText().toString());
+				}
+				return false;
+			}
+		});
 	}
 
 	/**
@@ -60,8 +91,23 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId)
 	{
+		// 성별 선택 라디오 버튼
+		if (group == binding.genderChoice)
+		{
+			switch (checkedId)
+			{
+			case R.id.btn_man:
+				Pref.gender = "man";
+				break;
+
+			case R.id.btn_woman:
+				Pref.gender = "woman";
+				break;
+			}
+		}
+
 		// 지도 타입 라디오 버튼
-		if (group == binding.radioMapType)
+		else if (group == binding.radioMapType)
 		{
 			switch (checkedId)
 			{
