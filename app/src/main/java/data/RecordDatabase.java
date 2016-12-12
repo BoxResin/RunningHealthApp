@@ -74,6 +74,30 @@ public class RecordDatabase
 		return records.toArray(new Record[]{});
 	}
 
+	/**
+	 * 기록을 수정하는 메서드
+	 * @param uuid 수정할 기록의 uuid
+	 * @param name 새로운 기록의 이름
+	 */
+	void update(String uuid, String name)
+	{
+		SQLiteDatabase db = helper.getWritableDatabase();
+		db.execSQL("UPDATE Record SET name = '" + name + "' WHERE id = '" + uuid + "';");
+		db.close();
+	}
+
+	/**
+	 * 기록을 삭제하는 메서드
+	 * @param uuid 지울 기록의 uuid
+	 */
+	void delete(String uuid)
+	{
+		SQLiteDatabase db = helper.getWritableDatabase();
+		db.execSQL("DELETE FROM Record WHERE id = '" + uuid + "';");
+		db.execSQL("DELETE FROM RecordPoint WHERE id = '" + uuid + "';");
+		db.close();
+	}
+
 	private static class DBHelper extends SQLiteOpenHelper
 	{
 		public DBHelper(Context context)
@@ -107,7 +131,7 @@ public class RecordDatabase
 		ourInstance.helper = new DBHelper(context);
 	}
 
-	static RecordDatabase get()
+	public static RecordDatabase get()
 	{
 		return ourInstance;
 	}

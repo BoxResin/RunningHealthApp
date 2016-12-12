@@ -106,6 +106,8 @@ public class Record
 	 */
 	public void discard()
 	{
+		// DB에서 영구 삭제한다.
+		RecordDatabase.get().delete(id.toString());
 	}
 
 	public String getName()
@@ -115,7 +117,9 @@ public class Record
 
 	public void setName(String name)
 	{
+		// DB에 저장된 내용도 업데이트한다.
 		this.name = name;
+		RecordDatabase.get().update(id.toString(), name);
 	}
 
 	public String getDate()

@@ -1,16 +1,23 @@
 package app.boxresin.runninghealthapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.Locale;
 
@@ -63,9 +70,73 @@ public class RecordFragment extends Fragment implements AdapterView.OnItemClickL
 		adapter.addAll(Record.readAll());
 		binding.listRecord.setAdapter(adapter);
 		binding.listRecord.setOnItemClickListener(this);
+		registerForContextMenu(binding.listRecord);
 		Settings.get().setRecordAdapter(adapter);
 
 		return binding.getRoot();
+	}
+
+	/**
+	 * 리스트뷰 아이템을 롱 클릭할 때 나타나는 메뉴를 생성하는 메서드
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+	{
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if (v.getId() == R.id.list_record)
+		{
+			MenuInflater inflater = getActivity().getMenuInflater();
+			inflater.inflate(R.menu.list_record, menu);
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+		switch (item.getItemId())
+		{
+		case R.id.action_change_name: // 이름 수정 메뉴
+			final EditText input = new EditText(getContext());
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT);
+			input.setSingleLine(true);
+			input.setHint("수정할 이름 입력");
+			input.setLayoutParams(layoutParams);
+
+			// 이름 수정 대화상자를 띄운다.
+			new AlertDialog.Builder(getContext())
+					.setTitle("이름 수정")
+					.setView(input)
+					.setPositiveButton("수정", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							if (!input.getText().toString().equals(""))
+							{
+								// 기록의 이름을 수정한다.
+								Record record = adapter.getItem(info.position);
+								record.setName(input.getText().toString());
+							}
+						}
+					})
+					.setCancelable(false)
+					.setNegativeButton("취소", null)
+					.show();
+
+			return true;
+
+		case R.id.action_delete: // 삭제 메뉴
+			// 해당 기록을 삭제한다.
+			Record record = adapter.getItem(info.position);
+			adapter.remove(record);
+			record.discard();
+			return true;
+		}
+		return super.onContextItemSelected(item);
 	}
 
 	/**

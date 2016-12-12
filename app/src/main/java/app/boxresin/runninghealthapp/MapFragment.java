@@ -51,7 +51,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	private boolean bCamera; // 카메라 띄우기 여부
 	private boolean isPaused; // 프래그먼트가 현재 onPause된 상태인지
 
-	private Record record = new Record();;
+	private Record record = new Record();
 
 	private MapView lastMapView; // 마지막으로 사용된 맵뷰
 
@@ -348,6 +348,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		// 위치 기록을 중단한다.
 		//noinspection ResourceType
 		locationManager.removeUpdates(this);
+
+		// 저장하지 않은 기록 데이터를 삭제한다.
+		record.discard();
 
 		super.onDestroy();
 	}
