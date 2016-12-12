@@ -26,6 +26,16 @@
 				tools:visibility = "visible"/>
 		</FrameLayout>
 
+		<!-- 쉐도우 진행도 프로그레스 -->
+		<ProgressBar
+			android:id = "@+id/progress_shadow"
+			android:layout_width = "match_parent"
+			style = "?android:attr/progressBarStyleHorizontal"
+			android:layout_height = "8dp"
+			android:layout_alignParentBottom = "true"
+			android:visibility = "gone"
+			tools:visibility = "visible"/>
+
 		<!-- 속도, 칼로리 표시 영역 -->
 		<LinearLayout
 			android:id = "@+id/panel_speed_kcal"
@@ -55,6 +65,7 @@
 				android:id = "@+id/txt_kcal"
 				android:layout_width = "wrap_content"
 				android:layout_height = "wrap_content"
+				android:layout_marginBottom = "5dp"
 				android:shadowColor = "@android:color/black"
 				android:shadowDx = "3"
 				android:shadowDy = "3"
@@ -62,6 +73,18 @@
 				android:textColor = "@color/colorPrimary"
 				android:textSize = "20sp"
 				tools:text = "31 ㎉"/>
+
+			<TextView
+				android:id = "@+id/txt_time"
+				android:layout_width = "wrap_content"
+				android:layout_height = "wrap_content"
+				android:shadowColor = "@android:color/black"
+				android:shadowDx = "3"
+				android:shadowDy = "3"
+				android:shadowRadius = "2"
+				android:textColor = "@android:color/white"
+				android:textSize = "15sp"
+				tools:text = "7 분 경과"/>
 		</LinearLayout>
 
 		<!-- 현재 위치 추적 버튼 영역 -->

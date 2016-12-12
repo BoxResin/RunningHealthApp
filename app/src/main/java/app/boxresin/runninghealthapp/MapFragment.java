@@ -79,13 +79,14 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			public void run()
 			{
 				long gap = next();
-				if (gap != 0 && isStart)
+				if (gap != 0 && isStart && index <= loadedLine.getPointCount())
 				{
 					shadowLine.addPoint(loadedLine.getPoint(index - 1));
 					DaumMapView.get(getContext()).removePolyline(shadowLine);
 					DaumMapView.get(getContext()).addPolyline(shadowLine);
-//					handler.postDelayed(task, gap);
-					handler.postDelayed(task, 100);
+					binding.progressShadow.setProgress(getTotalTime());
+					handler.postDelayed(task, gap);
+//					handler.postDelayed(task, 100);
 				}
 				else if (gap == 0 && isStart)
 				{
@@ -96,7 +97,17 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			}
 		};
 
-		public void reset()
+		int getTotalTime()
+		{
+			long result = 0;
+			for (int i = 0; i < index; i++)
+			{
+				result += Math.abs(loadedRecord.getTimes().get(i) - loadedRecord.getTimes().get(i + 1));
+			}
+			return (int) result / 60000;
+		}
+
+		void reset()
 		{
 			index = 0;
 			maxIndex = 0;
@@ -107,7 +118,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		/**
 		 * 다음 좌표까지 가는데 걸린 시간을 가져오는 메서드
 		 */
-		public long next()
+		long next()
 		{
 			if (index < maxIndex)
 			{
@@ -118,7 +129,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			return 0;
 		}
 
-		public void start()
+		void start()
 		{
 			if (loadedLine == null)
 				return;
@@ -127,7 +138,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			handler.post(task);
 		}
 
-		public void pause()
+		void pause()
 		{
 			isStart = false;
 			if (index > 0)
@@ -362,6 +373,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 								// 불러온 쉐도우 궤적을 초기화한다.
 								shadowCounter.reset();
+								binding.progressShadow.setVisibility(View.GONE);
 								loadedRecord = null;
 
 								// 기록 프래그먼트로 이동한다.
@@ -386,12 +398,14 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			traceLine = new MapPolyline();
 			loadedLine = new MapPolyline();
 			shadowCounter.reset();
+			binding.progressShadow.setVisibility(View.GONE);
 		}
 
 		// 불러온 이동궤적 삭제 메뉴
 		else if (item.getItemId() == R.id.action_remove_loadrd_lines)
 		{
 			shadowCounter.reset();
+			binding.progressShadow.setVisibility(View.GONE);
 			loadedRecord = null;
 			DaumMapView.get(getContext()).removePolyline(loadedLine);
 			loadedLine = new MapPolyline();
@@ -526,6 +540,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		record.addPoint(mapPoint);
 		binding.txtSpeed.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", record.getCurrentSpeed()));
 		binding.txtKcal.setText(String.format(Locale.KOREAN, "%.2f ㎉", record.getConsumed()));
+		binding.txtTime.setText(String.format(Locale.KOREAN, "%.1f 분 경과", record.getElapsed()));
 
 		// 현재 위치 추적 상태일 때만 지도를 현재 위치로 이동시킨다.
 		if (bChase)
@@ -560,6 +575,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
 		DaumMapView.get(getContext()).addPolyline(loadedLine);
 		DaumMapView.get(getContext()).addPolyline(traceLine);
+
+		shadowCounter.reset();
 
 		// 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
 		DaumMapView.get(getContext()).moveCamera(CameraUpdateFactory.newMapPointBounds(new MapPointBounds(loadedLine.getMapPoints()), 100));

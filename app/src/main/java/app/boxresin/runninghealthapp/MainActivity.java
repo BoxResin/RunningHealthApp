@@ -123,6 +123,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 				{
 					mapFragment.loadedRecord = Settings.get().getRecordAdapter().getItem(recordIndex);
 					mapFragment.setLoadedLines(LocationConverter.toPolyline(locations));
+					mapFragment.binding.progressShadow.setVisibility(View.VISIBLE);
+					mapFragment.binding.progressShadow.setMax((int) mapFragment.loadedRecord.getElapsed());
+					mapFragment.binding.progressShadow.setProgress(0);
 				}
 			}
 		});
