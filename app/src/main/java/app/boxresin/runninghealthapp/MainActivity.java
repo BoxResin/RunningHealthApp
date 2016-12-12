@@ -14,7 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import java.util.Locale;
 
@@ -73,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		// 내비게이션 드로어에 사용자 정보를 집어넣는다.
 		((TextView) navView.getHeaderView(0).findViewById(R.id.txt_user_info)).setText(String.format(Locale.KOREAN, "%d ㎝, %d ㎏", Pref.height, Pref.weight));
+		GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(((ImageView) navView.getHeaderView(0).findViewById(R.id.imageView)));
+		Glide.with(this).load(R.raw.motion).into(imageViewTarget);
 
 		binding.getRoot().postDelayed(new Runnable()
 		{
