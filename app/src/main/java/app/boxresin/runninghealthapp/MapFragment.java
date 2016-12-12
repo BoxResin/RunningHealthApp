@@ -145,7 +145,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		lastMapView = DaumMapView.get(getContext());
 		DaumMapView.changeParent(getContext(), binding.mapViewParent);
 		traceLine.setLineColor(Color.argb(128, 255, 51, 0));
-		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
+		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
 		lastMapView.addPolyline(traceLine);
 		lastMapView.addPolyline(loadedLine);
 
@@ -308,7 +308,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		{
 			DaumMapView.get(getContext()).removePolyline(loadedLine);
 			loadedLine = new MapPolyline();
-			loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
+			loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
 			DaumMapView.get(getContext()).addPolyline(loadedLine);
 		}
 
@@ -469,7 +469,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	{
 		DaumMapView.get(getContext()).removeAllPolylines();
 		loadedLine = line;
-		loadedLine.setLineColor(Color.argb(128, 70, 70, 70));
+		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
 		DaumMapView.get(getContext()).addPolyline(loadedLine);
 		DaumMapView.get(getContext()).addPolyline(traceLine);
 	}
