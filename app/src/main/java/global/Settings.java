@@ -1,5 +1,6 @@
 package global;
 
+import android.support.design.widget.NavigationView;
 import android.widget.ArrayAdapter;
 
 import data.Record;
@@ -21,6 +22,7 @@ public class Settings
 	}
 
 	private ArrayAdapter<Record> recordAdapter;
+	private NavigationView navView;
 	public Record currentRecord;
 
 	public ArrayAdapter<Record> getRecordAdapter()
@@ -31,5 +33,15 @@ public class Settings
 	public void setRecordAdapter(ArrayAdapter<Record> recordAdapter)
 	{
 		this.recordAdapter = recordAdapter;
+	}
+
+	public NavigationView getNavView()
+	{
+		return navView;
+	}
+
+	public void setNavView(NavigationView navView)
+	{
+		this.navView = navView;
 	}
 }

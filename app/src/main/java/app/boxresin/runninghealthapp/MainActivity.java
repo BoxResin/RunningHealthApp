@@ -14,9 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.ActivityMainBinding;
 import data.Pref;
+import global.Settings;
 import util.LocationConverter;
 import view.CameraSurface;
 
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		// 툴바에 햄버거 메뉴를 추가하고 내비게이션 드로어와 동기화한다.
 		navView = (NavigationView) findViewById(R.id.nav_view);
+		Settings.get().setNavView(navView);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawer, toolbar, R.string.app_name, R.string.app_name);
 		binding.drawer.setDrawerListener(toggle);
 		toggle.syncState();
@@ -65,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 		// 내비게이션 드로어에서, 지도 화면에 체크한다.
 		navView.setCheckedItem(R.id.nav_main);
+
+		// 내비게이션 드로어에 사용자 정보를 집어넣는다.
+		((TextView) navView.getHeaderView(0).findViewById(R.id.txt_user_info)).setText(String.format(Locale.KOREAN, "%d ㎝, %d ㎏", Pref.height, Pref.weight));
 
 		binding.getRoot().postDelayed(new Runnable()
 		{

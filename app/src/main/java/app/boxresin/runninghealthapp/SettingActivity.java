@@ -9,9 +9,13 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import java.util.Locale;
 
 import app.boxresin.runninghealthapp.databinding.ActivitySettingBinding;
 import data.Pref;
+import global.Settings;
 
 import static net.daum.mf.map.api.MapView.MapType.Hybrid;
 import static net.daum.mf.map.api.MapView.MapType.Satellite;
@@ -65,7 +69,7 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 		binding.radioMapType.setOnCheckedChangeListener(this);
 
 		// 신체정보 관련 에디트를 초기화한다.
-		binding.editHeight.setOnKeyListener(new View.OnKeyListener()
+		View.OnKeyListener keyListener = new View.OnKeyListener()
 		{
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event)
@@ -80,9 +84,14 @@ public class SettingActivity extends AppCompatActivity implements RadioGroup.OnC
 					if (!binding.editWeight.getText().toString().equals(""))
 						Pref.weight = Integer.parseInt(binding.editWeight.getText().toString());
 				}
+				// 내비게이션 드로어의 사용자 정보를 수정한다.
+				((TextView) Settings.get().getNavView().getHeaderView(0).findViewById(R.id.txt_user_info)).
+						setText(String.format(Locale.KOREAN, "%d ㎝, %d ㎏", Pref.height, Pref.weight));
 				return false;
 			}
-		});
+		};
+		binding.editHeight.setOnKeyListener(keyListener);
+		binding.editWeight.setOnKeyListener(keyListener);
 	}
 
 	/**
