@@ -1,0 +1,176 @@
+[1mdiff --git a/app/src/main/java/app/boxresin/runninghealthapp/MainActivity.java b/app/src/main/java/app/boxresin/runninghealthapp/MainActivity.java[m
+[1mindex 22c5b67..3af11be 100644[m
+[1m--- a/app/src/main/java/app/boxresin/runninghealthapp/MainActivity.java[m
+[1m+++ b/app/src/main/java/app/boxresin/runninghealthapp/MainActivity.java[m
+[36m@@ -118,8 +118,12 @@[m [mpublic class MainActivity extends AppCompatActivity implements NavigationView.On[m
+ [m
+ 				// 옛날 기록의 위치 데이터가 있으면 지도에 소환한다.[m
+ 				Parcelable[] locations = intent.getParcelableArrayExtra("location_data");[m
+[31m-				if (locations != null)[m
+[32m+[m				[32mint recordIndex = intent.getIntExtra("record_index", -1);[m
+[32m+[m				[32mif (locations != null && recordIndex != -1)[m
+[32m+[m				[32m{[m
+[32m+[m					[32mmapFragment.loadedRecord = Settings.get().getRecordAdapter().getItem(recordIndex);[m
+ 					mapFragment.setLoadedLines(LocationConverter.toPolyline(locations));[m
+[32m+[m				[32m}[m
+ 			}[m
+ 		});[m
+ 	}[m
+[1mdiff --git a/app/src/main/java/app/boxresin/runninghealthapp/MapFragment.java b/app/src/main/java/app/boxresin/runninghealthapp/MapFragment.java[m
+[1mindex bc58121..91be94a 100644[m
+[1m--- a/app/src/main/java/app/boxresin/runninghealthapp/MapFragment.java[m
+[1m+++ b/app/src/main/java/app/boxresin/runninghealthapp/MapFragment.java[m
+[36m@@ -9,6 +9,7 @@[m [mimport android.location.Location;[m
+ import android.location.LocationListener;[m
+ import android.location.LocationManager;[m
+ import android.os.Bundle;[m
+[32m+[m[32mimport android.os.Handler;[m
+ import android.support.annotation.Nullable;[m
+ import android.support.v4.app.Fragment;[m
+ import android.support.v7.app.AlertDialog;[m
+[36m@@ -51,17 +52,76 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 	private boolean bCamera; // 카메라 띄우기 여부[m
+ 	private boolean isPaused; // 프래그먼트가 현재 onPause된 상태인지[m
+ [m
+[32m+[m	[32mRecord loadedRecord;[m
+ 	private Record record = new Record();[m
+ [m
+ 	private MapView lastMapView; // 마지막으로 사용된 맵뷰[m
+ [m
+ 	private MapPolyline traceLine = new MapPolyline(); // 이동 궤적[m
+ 	private MapPolyline loadedLine = new MapPolyline(); // 이전 기록에서 불러온 궤적[m
+[32m+[m	[32mprivate MapPolyline shadowLine = new MapPolyline(); // 이전 기록 궤적 중, 어둡게 차오른 궤적[m
+ [m
+ 	private Location lastLocation; // 마지막으로 있었던 위치[m
+ [m
+ 	private LocationManager locationManager;[m
+ [m
+[32m+[m	[32mprivate class ShadowCounter[m
+[32m+[m	[32m{[m
+[32m+[m		[32mprivate int index = 0;[m
+[32m+[m		[32mprivate int maxIndex = 0;[m
+[32m+[m		[32mprivate boolean isStart = false;[m
+[32m+[m		[32mprivate Handler handler = new Handler();[m
+[32m+[m		[32mprivate Runnable task = new Runnable()[m
+[32m+[m		[32m{[m
+[32m+[m			[32m@Override[m
+[32m+[m			[32mpublic void run()[m
+[32m+[m			[32m{[m
+[32m+[m				[32mlong gap = next();[m
+[32m+[m				[32mif (gap != 0 && isStart)[m
+[32m+[m				[32m{[m
+[32m+[m					[32mshadowLine.addPoint(loadedLine.getPoint(index - 1));[m
+[32m+[m					[32mhandler.postDelayed(task, gap);[m
+[32m+[m				[32m}[m
+[32m+[m			[32m}[m
+[32m+[m		[32m};[m
+[32m+[m
+[32m+[m		[32mpublic void reset(int maxIndex)[m
+[32m+[m		[32m{[m
+[32m+[m			[32mindex = 0;[m
+[32m+[m			[32mthis.maxIndex = maxIndex;[m
+[32m+[m			[32mshadowLine = new MapPolyline();[m
+[32m+[m			[32mshadowLine.setLineColor(Color.argb(220, 50, 50, 50));[m
+[32m+[m		[32m}[m
+[32m+[m
+[32m+[m		[32m/**[m
+[32m+[m		[32m * 다음 좌표까지 가는데 걸린 시간을 가져오는 메서드[m
+[32m+[m		[32m */[m
+[32m+[m		[32mpublic long next()[m
+[32m+[m		[32m{[m
+[32m+[m			[32mif (index < maxIndex - 1)[m
+[32m+[m			[32m{[m
+[32m+[m				[32mlong gap = Math.abs(loadedRecord.getTimes().get(index) - loadedRecord.getTimes().get(index + 1));[m
+[32m+[m				[32mindex++;[m
+[32m+[m				[32mreturn gap;[m
+[32m+[m			[32m}[m
+[32m+[m			[32mreturn 0;[m
+[32m+[m		[32m}[m
+[32m+[m
+[32m+[m		[32mpublic void start()[m
+[32m+[m		[32m{[m
+[32m+[m			[32mif (loadedLine == null)[m
+[32m+[m				[32mreturn;[m
+[32m+[m			[32misStart = true;[m
+[32m+[m			[32mhandler.post(task);[m
+[32m+[m		[32m}[m
+[32m+[m
+[32m+[m		[32mpublic void pause()[m
+[32m+[m		[32m{[m
+[32m+[m			[32misStart = false;[m
+[32m+[m		[32m}[m
+[32m+[m	[32m}[m
+[32m+[m	[32mprivate ShadowCounter shadowCounter = new ShadowCounter();[m
+[32m+[m
+ 	@Override[m
+ 	public void onCreate(@Nullable Bundle savedInstanceState)[m
+ 	{[m
+[36m@@ -146,8 +206,10 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 		DaumMapView.changeParent(getContext(), binding.mapViewParent);[m
+ 		traceLine.setLineColor(Color.argb(128, 255, 51, 0));[m
+ 		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));[m
+[32m+[m		[32mshadowLine.setLineColor(Color.argb(220, 50, 50, 50));[m
+ 		lastMapView.addPolyline(traceLine);[m
+ 		lastMapView.addPolyline(loadedLine);[m
+[32m+[m		[32mlastMapView.addPolyline(shadowLine);[m
+ [m
+ 		// 마지막 위치가 있으면 그 위치로 이동한다.[m
+ 		if (lastLocation != null)[m
+[36m@@ -210,6 +272,8 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 			// 위치 기록을 시작해야 할 때[m
+ 			if (!bStarted)[m
+ 			{[m
+[32m+[m				[32mshadowCounter.start();[m
+[32m+[m
+ 				// 현재 속도, 소모 칼로리 패널을 나타낸다.[m
+ 				binding.panelSpeedKcal.setVisibility(View.VISIBLE);[m
+ [m
+[36m@@ -231,6 +295,8 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 			// 위치 기록을 멈춰야 할 때[m
+ 			else[m
+ 			{[m
+[32m+[m				[32mshadowCounter.pause();[m
+[32m+[m
+ 				// 현재 속도, 소모 칼로리 패널을 숨긴다.[m
+ 				binding.panelSpeedKcal.setVisibility(View.GONE);[m
+ [m
+[36m@@ -280,6 +346,10 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 								traceLine = new MapPolyline();[m
+ 								loadedLine = new MapPolyline();[m
+ [m
+[32m+[m								[32m// 불러온 쉐도우 궤적을 초기화한다.[m
+[32m+[m								[32mshadowCounter.reset(0);[m
+[32m+[m								[32mloadedRecord = null;[m
+[32m+[m
+ 								// 기록 프래그먼트로 이동한다.[m
+ 								((MainActivity) getActivity()).showRecordFragment();[m
+ 							}[m
+[36m@@ -301,15 +371,20 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 			lastLocation = null;[m
+ 			traceLine = new MapPolyline();[m
+ 			loadedLine = new MapPolyline();[m
+[32m+[m			[32mshadowCounter.reset(0);[m
+ 		}[m
+ [m
+ 		// 불러온 이동궤적 삭제 메뉴[m
+ 		else if (item.getItemId() == R.id.action_remove_loadrd_lines)[m
+ 		{[m
+[32m+[m			[32mshadowCounter.reset(0);[m
+[32m+[m			[32mloadedRecord = null;[m
+ 			DaumMapView.get(getContext()).removePolyline(loadedLine);[m
+ 			loadedLine = new MapPolyline();[m
+ 			loadedLine.setLineColor(Color.argb(128, 120, 120, 120));[m
+[32m+[m			[32mshadowLine.setLineColor(Color.argb(220, 50, 50, 50));[m
+ 			DaumMapView.get(getContext()).addPolyline(loadedLine);[m
+[32m+[m			[32mDaumMapView.get(getContext()).addPolyline(shadowLine);[m
+ 		}[m
+ [m
+ 		// 카메라 메뉴[m
+[36m@@ -470,6 +545,7 @@[m [mpublic class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList[m
+ 		DaumMapView.get(getContext()).removeAllPolylines();[m
+ 		loadedLine = line;[m
+ 		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));[m
+[32m+[m		[32mshadowLine.setLineColor(Color.argb(220, 50, 50, 50));[m
+ 		DaumMapView.get(getContext()).addPolyline(loadedLine);[m
+ 		DaumMapView.get(getContext()).addPolyline(traceLine);[m
+ 	}[m

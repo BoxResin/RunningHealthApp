@@ -107,7 +107,8 @@ public class Record
 	public void discard()
 	{
 		// DB에서 영구 삭제한다.
-		RecordDatabase.get().delete(id.toString());
+		if (id != null)
+			RecordDatabase.get().delete(id.toString());
 	}
 
 	public String getName()

@@ -118,8 +118,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 				// 옛날 기록의 위치 데이터가 있으면 지도에 소환한다.
 				Parcelable[] locations = intent.getParcelableArrayExtra("location_data");
-				if (locations != null)
+				int recordIndex = intent.getIntExtra("record_index", -1);
+				if (locations != null && recordIndex != -1)
+				{
+					mapFragment.loadedRecord = Settings.get().getRecordAdapter().getItem(recordIndex);
 					mapFragment.setLoadedLines(LocationConverter.toPolyline(locations));
+				}
 			}
 		});
 	}

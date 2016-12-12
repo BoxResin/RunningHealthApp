@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -24,9 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapCircle;
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
@@ -51,16 +54,87 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 	private boolean bCamera; // 카메라 띄우기 여부
 	private boolean isPaused; // 프래그먼트가 현재 onPause된 상태인지
 
+	Record loadedRecord;
 	private Record record = new Record();
 
 	private MapView lastMapView; // 마지막으로 사용된 맵뷰
 
 	private MapPolyline traceLine = new MapPolyline(); // 이동 궤적
 	private MapPolyline loadedLine = new MapPolyline(); // 이전 기록에서 불러온 궤적
+	private MapPolyline shadowLine = new MapPolyline(); // 이전 기록 궤적 중, 어둡게 차오른 궤적
 
 	private Location lastLocation; // 마지막으로 있었던 위치
 
 	private LocationManager locationManager;
+
+	private class ShadowCounter
+	{
+		private int index = 0;
+		private int maxIndex = 0;
+		private boolean isStart = false;
+		private Handler handler = new Handler();
+		private Runnable task = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				long gap = next();
+				if (gap != 0 && isStart)
+				{
+					shadowLine.addPoint(loadedLine.getPoint(index - 1));
+					DaumMapView.get(getContext()).removePolyline(shadowLine);
+					DaumMapView.get(getContext()).addPolyline(shadowLine);
+//					handler.postDelayed(task, gap);
+					handler.postDelayed(task, 100);
+				}
+				else if (gap == 0 && isStart)
+				{
+					shadowLine.addPoint(loadedLine.getPoint(index));
+					DaumMapView.get(getContext()).removePolyline(shadowLine);
+					DaumMapView.get(getContext()).addPolyline(shadowLine);
+				}
+			}
+		};
+
+		public void reset()
+		{
+			index = 0;
+			maxIndex = 0;
+			shadowLine = new MapPolyline();
+			shadowLine.setLineColor(Color.argb(220, 50, 50, 50));
+		}
+
+		/**
+		 * 다음 좌표까지 가는데 걸린 시간을 가져오는 메서드
+		 */
+		public long next()
+		{
+			if (index < maxIndex)
+			{
+				long gap = Math.abs(loadedRecord.getTimes().get(index) - loadedRecord.getTimes().get(index + 1));
+				index++;
+				return gap;
+			}
+			return 0;
+		}
+
+		public void start()
+		{
+			if (loadedLine == null)
+				return;
+			maxIndex = loadedRecord.getPointCount() - 1;
+			isStart = true;
+			handler.post(task);
+		}
+
+		public void pause()
+		{
+			isStart = false;
+			if (index > 0)
+				index--;
+		}
+	}
+	private ShadowCounter shadowCounter = new ShadowCounter();
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
@@ -146,8 +220,10 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		DaumMapView.changeParent(getContext(), binding.mapViewParent);
 		traceLine.setLineColor(Color.argb(128, 255, 51, 0));
 		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
+		shadowLine.setLineColor(Color.argb(220, 50, 50, 50));
 		lastMapView.addPolyline(traceLine);
 		lastMapView.addPolyline(loadedLine);
+		lastMapView.addPolyline(shadowLine);
 
 		// 마지막 위치가 있으면 그 위치로 이동한다.
 		if (lastLocation != null)
@@ -210,6 +286,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 위치 기록을 시작해야 할 때
 			if (!bStarted)
 			{
+				shadowCounter.start();
+
 				// 현재 속도, 소모 칼로리 패널을 나타낸다.
 				binding.panelSpeedKcal.setVisibility(View.VISIBLE);
 
@@ -231,6 +309,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			// 위치 기록을 멈춰야 할 때
 			else
 			{
+				shadowCounter.pause();
+
 				// 현재 속도, 소모 칼로리 패널을 숨긴다.
 				binding.panelSpeedKcal.setVisibility(View.GONE);
 
@@ -280,6 +360,10 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 								traceLine = new MapPolyline();
 								loadedLine = new MapPolyline();
 
+								// 불러온 쉐도우 궤적을 초기화한다.
+								shadowCounter.reset();
+								loadedRecord = null;
+
 								// 기록 프래그먼트로 이동한다.
 								((MainActivity) getActivity()).showRecordFragment();
 							}
@@ -301,15 +385,19 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			lastLocation = null;
 			traceLine = new MapPolyline();
 			loadedLine = new MapPolyline();
+			shadowCounter.reset();
 		}
 
 		// 불러온 이동궤적 삭제 메뉴
 		else if (item.getItemId() == R.id.action_remove_loadrd_lines)
 		{
+			shadowCounter.reset();
+			loadedRecord = null;
 			DaumMapView.get(getContext()).removePolyline(loadedLine);
 			loadedLine = new MapPolyline();
 			loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
 			DaumMapView.get(getContext()).addPolyline(loadedLine);
+			DaumMapView.get(getContext()).addPolyline(shadowLine);
 		}
 
 		// 카메라 메뉴
@@ -472,5 +560,8 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 		loadedLine.setLineColor(Color.argb(128, 120, 120, 120));
 		DaumMapView.get(getContext()).addPolyline(loadedLine);
 		DaumMapView.get(getContext()).addPolyline(traceLine);
+
+		// 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+		DaumMapView.get(getContext()).moveCamera(CameraUpdateFactory.newMapPointBounds(new MapPointBounds(loadedLine.getMapPoints()), 100));
 	}
 }
