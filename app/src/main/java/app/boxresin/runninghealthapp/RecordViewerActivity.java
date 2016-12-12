@@ -2,6 +2,8 @@ package app.boxresin.runninghealthapp;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,7 +51,6 @@ public class RecordViewerActivity extends AppCompatActivity
 		// 화면에 맵뷰를 추가한다.
 		DaumMapView.changeParent(this, binding.mapViewParent);
 
-		// 더미 위치 데이터 넣기 NOTE 나중에 지울 것
 		poly = new MapPolyline();
 		poly.setLineColor(Color.argb(128, 255, 51, 0));
 		for (int i = 0; i < record.getPointCount(); i++)
@@ -63,7 +64,7 @@ public class RecordViewerActivity extends AppCompatActivity
 		startPoint.setCustomImageAutoscale(false);
 		startPoint.setCustomImageAnchor(0.5f, 1.0f);
 		startPoint.setItemName("출발점");
-		DaumMapView.get(this).addPOIItem(startPoint);
+//		DaumMapView.get(this).addPOIItem(startPoint);
 
 		MapPOIItem endPoint = new MapPOIItem();
 		endPoint.setMapPoint(MapPoint.mapPointWithGeoCoord(record.getLatitudes().get(record.getPointCount() - 1),
@@ -73,7 +74,7 @@ public class RecordViewerActivity extends AppCompatActivity
 		endPoint.setCustomImageAutoscale(false);
 		endPoint.setCustomImageAnchor(0.5f, 1.0f);
 		endPoint.setItemName("도착점");
-		DaumMapView.get(this).addPOIItem(endPoint);
+//		DaumMapView.get(this).addPOIItem(endPoint);
 
 		// 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
 		DaumMapView.get(this).moveCamera(CameraUpdateFactory.newMapPointBounds(new MapPointBounds(poly.getMapPoints()), 100));
@@ -83,6 +84,22 @@ public class RecordViewerActivity extends AppCompatActivity
 		binding.txtConsumed.setText(String.format(Locale.KOREAN, "총 %.2f ㎉ 소모", record.getConsumed()));
 		binding.txtFastest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", record.getFastest()));
 		binding.txtSlowest.setText(String.format(Locale.KOREAN, "%.2f ㎞/h", record.getSlowest()));
+
+		// 사진 데이터 추가
+		for (int i = 0; i < record.getImgPaths().size(); i++)
+		{
+			Bitmap bitmap = BitmapFactory.decodeFile(record.getImgPaths().get(i));
+
+			MapPOIItem marker = new MapPOIItem();
+			marker.setItemName("사진");
+			marker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+			marker.setCustomCalloutBalloonBitmap(bitmap);
+			marker.setCustomImageResourceId(R.drawable.custom_marker_red);
+			marker.setCustomImageAutoscale(false);
+			marker.setCustomImageAnchor(0.5f, 1.0f);
+			marker.setMapPoint(MapPoint.mapPointWithGeoCoord(record.getLatisForImg().get(i), record.getLongsForImg().get(i)));
+			DaumMapView.get(this).addPOIItem(marker);
+		}
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,7 +34,11 @@ import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.UUID;
 
 import app.boxresin.runninghealthapp.databinding.FragmentMapBinding;
 import data.Pref;
@@ -131,8 +136,9 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 
 		void start()
 		{
-			if (loadedLine == null)
+			if (loadedLine == null || loadedRecord == null)
 				return;
+
 			maxIndex = loadedRecord.getPointCount() - 1;
 			isStart = true;
 			handler.post(task);
@@ -507,7 +513,6 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 					@Override
 					public void onBitmapCaptured(Bitmap bitmap)
 					{
-
 						MapPOIItem marker = new MapPOIItem();
 						marker.setItemName("사진");
 						marker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
@@ -517,6 +522,44 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 						marker.setCustomImageAnchor(0.5f, 1.0f);
 						marker.setMapPoint(MapPoint.mapPointWithGeoCoord(lastLocation.getLatitude(), lastLocation.getLongitude()));
 						DaumMapView.get(getContext()).addPOIItem(marker);
+
+						// 이미지를 저장한다.
+						FileOutputStream out = null;
+						try
+						{
+							// 랜덤 파일명 생성
+							UUID id = UUID.randomUUID();
+
+							String imgPath = Environment.getExternalStorageDirectory().getPath() + "/RunningHealth/img/" + id.toString() + ".jpg";
+
+							// 해당 경로에 빈 파일 생성
+							File imagefile = new File(imgPath);
+							imagefile.getParentFile().mkdirs();
+							imagefile.createNewFile();
+
+							// 이미지를 해당 경로에 저장한다.
+							out = new FileOutputStream(imgPath);
+							bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+							record.addPicture(lastLocation.getLatitude(), lastLocation.getLongitude(), imgPath);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+						finally
+						{
+							try
+							{
+								if (out != null)
+								{
+									out.close();
+								}
+							}
+							catch (IOException e)
+							{
+								e.printStackTrace();
+							}
+						}
 					}
 				});
 			}

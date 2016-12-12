@@ -33,6 +33,12 @@ public class RecordDatabase
 					"'%s', %f, %f, %d);", record.getId(), record.getLatitudes().get(i), record.getLongitudes().get(i), record.getTimes().get(i)));
 		}
 
+		for (int i = 0; i < record.getImgPaths().size(); i++)
+		{
+			db.execSQL(String.format("INSERT INTO RecordPicture (id, latitude, longitude, path) VALUES (" +
+					"'%s', %f, %f, '%s');", record.getId(), record.getLatisForImg().get(i), record.getLongsForImg().get(i), record.getImgPaths().get(i)));
+		}
+
 		db.close();
 	}
 
@@ -66,6 +72,16 @@ public class RecordDatabase
 					} while (c.moveToNext());
 				}
 				c.close();
+
+				c = db.rawQuery("SELECT latitude, longitude, path FROM RecordPicture WHERE id = '" + uuid + "';", null);
+				if (c.moveToFirst())
+				{
+					do
+					{
+						record.addPicture(c.getDouble(0), c.getDouble(1), c.getString(2));
+					} while (c.moveToNext());
+				}
+				c.close();
 			} while (cursor.moveToNext());
 		}
 
@@ -95,6 +111,7 @@ public class RecordDatabase
 		SQLiteDatabase db = helper.getWritableDatabase();
 		db.execSQL("DELETE FROM Record WHERE id = '" + uuid + "';");
 		db.execSQL("DELETE FROM RecordPoint WHERE id = '" + uuid + "';");
+		db.execSQL("DELETE FROM RecordPicture WHERE id = '" + uuid + "';");
 		db.close();
 	}
 
@@ -114,6 +131,9 @@ public class RecordDatabase
 
 			db.execSQL("CREATE TABLE RecordPoint (_index INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT NOT NULL, " +
 					"latitude REAL, longitude REAL, time INTEGER);");
+
+			db.execSQL("CREATE TABLE RecordPicture (_index INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT NOT NULL, " +
+					"latitude REAL, longitude REAL, path TEXT NOT NULL);");
 		}
 
 		@Override

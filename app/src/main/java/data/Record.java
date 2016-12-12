@@ -2,6 +2,7 @@ package data;
 
 import net.daum.mf.map.api.MapPoint;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,6 +26,10 @@ public class Record
 	private ArrayList<Double> latitudes = new ArrayList<>(); // 모든 위도 좌표
 	private ArrayList<Double> longitudes = new ArrayList<>(); // 모든 경도 좌표
 	private ArrayList<Long> times = new ArrayList<>(); // 각 좌표당 시간 기록 (밀리 세컨드)
+
+	private ArrayList<Double> latisForImg = new ArrayList<>(); // 모든 사진 위도 좌표
+	private ArrayList<Double> longsForImg = new ArrayList<>(); // 모든 사진 경도 좌표
+	private ArrayList<String> imgPaths = new ArrayList<>(); // 모든 사진 파일 경로
 
 	public Record()
 	{
@@ -101,6 +106,13 @@ public class Record
 		times.add(time);
 	}
 
+	public void addPicture(double latitude, double longitude, String imgPath)
+	{
+		latisForImg.add(latitude);
+		longsForImg.add(longitude);
+		imgPaths.add(imgPath);
+	}
+
 	/**
 	 * 기록을 삭제하는 메서드
 	 */
@@ -109,6 +121,13 @@ public class Record
 		// DB에서 영구 삭제한다.
 		if (id != null)
 			RecordDatabase.get().delete(id.toString());
+
+		for (String path : imgPaths)
+		{
+			File file = new File(path);
+			if (file.isFile())
+				file.delete();
+		}
 	}
 
 	public String getName()
@@ -206,5 +225,20 @@ public class Record
 	public static Record[] readAll()
 	{
 		return RecordDatabase.get().readAll();
+	}
+
+	public ArrayList<Double> getLatisForImg()
+	{
+		return latisForImg;
+	}
+
+	public ArrayList<Double> getLongsForImg()
+	{
+		return longsForImg;
+	}
+
+	public ArrayList<String> getImgPaths()
+	{
+		return imgPaths;
 	}
 }
