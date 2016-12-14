@@ -354,6 +354,12 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			switch (item.getItemId())
 			{
 			case R.id.action_save_record: // 기록 저장 메뉴
+				if (record.getPointCount() == 0)
+				{
+					Toast.makeText(getContext(), "저장할 이동궤적이 없습니다.", Toast.LENGTH_SHORT).show();
+					return true;
+				}
+
 				// 기록 저장 대화상자를 띄운다.
 				new AlertDialog.Builder(getContext())
 						.setTitle("기록 저장")
@@ -389,7 +395,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 						.setCancelable(false)
 						.setNegativeButton("취소", null)
 						.show();
-				break;
+				return true;
 			}
 		}
 
