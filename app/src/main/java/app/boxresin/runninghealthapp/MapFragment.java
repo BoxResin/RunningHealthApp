@@ -354,7 +354,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			switch (item.getItemId())
 			{
 			case R.id.action_save_record: // 기록 저장 메뉴
-				if (record.getPointCount() == 0)
+				if (record != null && record.getPointCount() == 0)
 				{
 					Toast.makeText(getContext(), "저장할 이동궤적이 없습니다.", Toast.LENGTH_SHORT).show();
 					return true;
@@ -512,7 +512,7 @@ public class MapFragment extends Fragment implements Toolbar.OnMenuItemClickList
 			break;
 
 		case R.id.btn_take_photo: // 사진찍기 버튼
-			if (record.getPointCount() == 0)
+			if (record != null && record.getPointCount() == 0)
 			{
 				Toast.makeText(getContext(), "사진을 띄울 좌표가 없습니다. ▶를 눌러 이동궤적을 지도에 남긴 뒤 다시 시도하세요.", Toast.LENGTH_LONG).show();
 				break;

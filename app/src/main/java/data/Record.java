@@ -194,7 +194,10 @@ public class Record
 
 	public double getSlowest()
 	{
-		return slowestKmh;
+		if (slowestKmh == 9999999)
+			return 0;
+		else
+			return slowestKmh;
 	}
 
 	public ArrayList<Double> getLatitudes()
